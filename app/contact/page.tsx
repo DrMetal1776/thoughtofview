@@ -17,7 +17,7 @@ export default function ContactPage() {
         </div>
       ) : (
         <form
-          action="https://formsubmit.co/tjschafer0320@gmail.com"
+          action="https://formsubmit.co/thoughtofview@gmail.com"
           method="POST"
           onSubmit={() => setSubmitted(true)}
           className="space-y-5"
@@ -63,7 +63,7 @@ export default function ContactPage() {
         <div className="bg-white rounded-xl p-5 border border-gray-200">
           <div className="text-2xl mb-2">📧</div>
           <h3 className="font-bold mb-1">Email</h3>
-          <p className="text-sm text-gray-600">tjschafer0320@gmail.com</p>
+          <p className="text-sm text-gray-600">thoughtofview@gmail.com</p>
         </div>
         <div className="bg-white rounded-xl p-5 border border-gray-200">
           <div className="text-2xl mb-2">⏱️</div>
