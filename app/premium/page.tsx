@@ -48,12 +48,12 @@ function PremiumContent() {
     <div className="max-w-4xl mx-auto px-4 py-16">
       {success && (
         <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-8 text-center">
-          <p className="text-green-800 font-semibold">?? Welcome to Premium! Your subscription is now active.</p>
+          <p className="text-green-800 font-semibold">Welcome to Premium! Your subscription is now active.</p>
         </div>
       )}
       {canceled && (
         <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-8 text-center">
-          <p className="text-yellow-800">No worries – you can upgrade anytime.</p>
+          <p className="text-yellow-800">No worries - you can upgrade anytime.</p>
         </div>
       )}
       <div className="text-center mb-12">
@@ -69,7 +69,7 @@ function PremiumContent() {
           <ul className="space-y-3 mb-8">
             {['5 takes per day','All 5 angles','Public feed access','Upvoting & comments','Ads displayed'].map(f => (
               <li key={f} className="flex items-center gap-2 text-sm text-gray-600">
-                <span className="text-gray-400">?</span> {f}
+                <span className="text-gray-400">+</span> {f}
               </li>
             ))}
           </ul>
@@ -86,13 +86,13 @@ function PremiumContent() {
           <ul className="space-y-3 mb-8">
             {['Unlimited takes','All 5 angles','No ads','Priority generation','Public feed access','Upvoting & comments','Support the platform'].map(f => (
               <li key={f} className="flex items-center gap-2 text-sm text-gray-300">
-                <span className="text-brand-orange">?</span> {f}
+                <span className="text-brand-orange">+</span> {f}
               </li>
             ))}
           </ul>
           {isPremium ? (
             <div className="w-full py-3 rounded-xl bg-green-600 text-white text-center text-sm font-bold">
-              ? You're Premium!
+              You are Premium!
             </div>
           ) : (
             <button
@@ -100,7 +100,7 @@ function PremiumContent() {
               disabled={loading}
               className="w-full py-3 rounded-xl bg-brand-orange text-white font-bold hover:bg-orange-700 transition-colors disabled:opacity-50"
             >
-              {loading ? 'Redirecting...' : user ? 'Upgrade Now ?' : 'Sign in to Upgrade ?'}
+              {loading ? 'Redirecting...' : user ? 'Upgrade Now' : 'Sign in to Upgrade'}
             </button>
           )}
         </div>
