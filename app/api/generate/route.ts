@@ -21,6 +21,40 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Missing topic or angle' }, { status: 400 })
   }
 
+  // Check rate limit for logged-in users
+  if (userId) {
+    // Check if premium
+    const { data: sub } = await supabase
+      .from('subscriptions')
+      .select('status')
+      .eq('user_id', userId)
+      .single()
+
+    const isPremium = sub?.status === 'active'
+
+    if (!isPremium) {
+      // Check daily usage
+      const today = new Date().toISOString().split('T')[0]
+      const { data: usage } = await supabase
+        .from('take_usage')
+        .select('count')
+        .eq('user_id', userId)
+        .eq('date', today)
+        .single()
+
+      if (usage && usage.count >= 5) {
+        return NextResponse.json({ error: 'Daily limit reached. Upgrade to Premium for unlimited takes!', limitReached: true }, { status: 429 })
+      }
+
+      // Increment usage
+      await supabase.from('take_usage').upsert({
+        user_id: userId,
+        date: today,
+        count: (usage?.count || 0) + 1,
+      }, { onConflict: 'user_id,date' })
+    }
+  }
+
   const prompt = `You are a sharp opinion writer for a website called Thought of View.
 
 Topic: "${topic}"
@@ -53,7 +87,6 @@ BODY:
   const headline = headlineMatch ? headlineMatch[1].trim() : topic
   const body = bodyMatch ? bodyMatch[1].trim() : text
 
-  // Save to Supabase if user is logged in
   if (userId) {
     await supabase.from('takes').insert({
       user_id: userId,
