@@ -49,7 +49,7 @@ export default function PrivacyPage() {
         </section>
         <section>
           <h2 className="font-serif text-2xl font-bold text-black mb-3">7. Your Rights</h2>
-          <p>You have the right to access, correct, or delete your personal data. To request deletion of your account and data, contact us at tjschafer0320@gmail.com.</p>
+          <p>You have the right to access, correct, or delete your personal data. To request deletion of your account and data, contact us at thoughtofview@gmail.com.</p>
         </section>
         <section>
           <h2 className="font-serif text-2xl font-bold text-black mb-3">8. Contact</h2>
