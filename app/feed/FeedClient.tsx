@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
+import Comments from '@/components/Comments'
 
 const ANGLE_COLORS: Record<string, string> = {
   'Hot Take': 'bg-red-500',
@@ -85,7 +86,7 @@ export default function FeedClient() {
       <div className="flex gap-8">
         <div className="flex-1 min-w-0">
           <h1 className="font-serif text-4xl font-bold mb-2">The Feed</h1>
-          <p className="text-brand-muted mb-6">AI takes from the community — upvote the sharpest ones.</p>
+          <p className="text-brand-muted mb-6">AI takes from the community — upvote and discuss the sharpest ones.</p>
 
           <div className="flex flex-wrap gap-3 mb-6">
             <div className="flex gap-2">
@@ -140,7 +141,7 @@ export default function FeedClient() {
                   className="text-xs text-brand-orange mb-3 hover:underline">
                   {expandedId === take.id ? 'Show less' : 'Read more'}
                 </button>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mb-1">
                   <div className="flex items-center gap-3">
                     <button onClick={() => upvote(take.id, take.upvotes || 0)}
                       className="flex items-center gap-1.5 text-sm text-brand-muted hover:text-brand-orange transition-colors">
@@ -153,6 +154,7 @@ export default function FeedClient() {
                   </div>
                   <span className="text-xs text-gray-400">{new Date(take.created_at).toLocaleDateString()}</span>
                 </div>
+                <Comments takeId={take.id} />
               </div>
             ))}
           </div>
