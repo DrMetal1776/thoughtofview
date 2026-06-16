@@ -6,14 +6,28 @@ import type { User } from '@supabase/supabase-js'
 
 export default function Navbar() {
   const [user, setUser] = useState<User | null>(null)
+  const [isPremium, setIsPremium] = useState(false)
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUser(data.user))
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user)
+      if (data.user) checkPremium(data.user.id)
+    })
     const { data: listener } = supabase.auth.onAuthStateChange((_e, session) => {
       setUser(session?.user ?? null)
+      if (session?.user) checkPremium(session.user.id)
     })
     return () => listener.subscription.unsubscribe()
   }, [])
+
+  const checkPremium = async (userId: string) => {
+    const { data } = await supabase
+      .from('subscriptions')
+      .select('status')
+      .eq('user_id', userId)
+      .single()
+    setIsPremium(data?.status === 'active')
+  }
 
   const signIn = () => supabase.auth.signInWithOAuth({
     provider: 'google',
@@ -32,8 +46,16 @@ export default function Navbar() {
           <Link href="/feed" className="text-sm hover:text-brand-orange transition-colors">
             Feed
           </Link>
+          {!isPremium && (
+            <Link href="/premium" className="text-sm font-semibold text-brand-orange hover:text-orange-700 transition-colors">
+              ⚡ Premium
+            </Link>
+          )}
           {user ? (
             <div className="flex items-center gap-3">
+              {isPremium && (
+                <span className="text-xs bg-brand-orange text-white px-2 py-0.5 rounded-full font-semibold">PRO</span>
+              )}
               <Link href="/profile" className="text-sm hover:text-brand-orange transition-colors">
                 {user.email?.split('@')[0]}
               </Link>
