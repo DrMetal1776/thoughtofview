@@ -20,7 +20,7 @@ export default function AboutPage() {
         </p>
         <h2 className="font-serif text-2xl font-bold text-black mt-8">About the Creator</h2>
         <p>
-          Thought of View was founded by Timothy Schafer, a critical thinker passionate about ideas, debate, and the intersection of technology and human thought. Based in Michigan, Timothy built this platform to make sharp thinking accessible to everyone.
+          Thought of View was created by a team of critical thinkers passionate about ideas, debate, and the intersection of technology and human thought. We built this platform to make sharp thinking accessible to everyone.
         </p>
         <h2 className="font-serif text-2xl font-bold text-black mt-8">A Note on AI Content</h2>
         <p>
