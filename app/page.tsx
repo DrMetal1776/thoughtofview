@@ -100,7 +100,7 @@ export default function Home() {
       <div className="max-w-6xl mx-auto px-4 pb-10">
         <div className="bg-[#1A1A1A] rounded-2xl p-6 md:p-8">
           <p className="text-xs font-sans uppercase tracking-widest text-[#888] mb-3">Enter a topic, question, or debate</p>
-          <div className="flex gap-3 mb-6">
+          <div className="flex flex-col sm:flex-row gap-3 mb-6">
             <input
               value={topic}
               onChange={e => setTopic(e.target.value)}
@@ -111,7 +111,7 @@ export default function Home() {
             <button
               onClick={() => generate()}
               disabled={loading || !topic.trim()}
-              className="bg-brand-orange text-white font-semibold px-6 py-3 rounded-xl hover:bg-orange-700 transition-colors disabled:opacity-50 whitespace-nowrap"
+              className="bg-brand-orange text-white font-semibold px-6 py-3 rounded-xl hover:bg-orange-700 transition-colors disabled:opacity-50 w-full sm:w-auto"
             >
               {loading ? 'Thinking...' : 'Get the Take →'}
             </button>
