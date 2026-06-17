@@ -44,8 +44,11 @@ export default function Navbar() {
         </Link>
         <div className="flex items-center gap-4">
           <Link href="/feed" className="text-sm hover:text-brand-orange transition-colors">
-            Feed
+          Feed
           </Link>
+          <Link href="/opinionbot" className="text-sm font-semibold hover:text-brand-orange transition-colors">
+          🤖 OpinionBot
+        </Link>
           {!isPremium && (
             <Link href="/premium" className="text-sm font-semibold text-brand-orange hover:text-orange-700 transition-colors">
               ⚡ Premium
