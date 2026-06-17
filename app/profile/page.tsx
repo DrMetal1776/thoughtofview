@@ -18,6 +18,9 @@ export default function ProfilePage() {
   const [user, setUser] = useState<User | null>(null)
   const [takes, setTakes] = useState<Take[]>([])
   const [loading, setLoading] = useState(true)
+  const [isPremium, setIsPremium] = useState(false)
+  const [canceling, setCanceling] = useState(false)
+  const [canceled, setCanceled] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -25,6 +28,7 @@ export default function ProfilePage() {
       if (!data.user) { router.push('/'); return }
       setUser(data.user)
       fetchMyTakes(data.user.id)
+      checkPremium(data.user.id)
     })
   }, [])
 
@@ -38,9 +42,40 @@ export default function ProfilePage() {
     setLoading(false)
   }
 
+  const checkPremium = async (userId: string) => {
+    const { data } = await supabase
+      .from('subscriptions')
+      .select('status')
+      .eq('user_id', userId)
+      .single()
+    setIsPremium(data?.status === 'active')
+  }
+
   const deleteTake = async (id: string) => {
     await supabase.from('takes').delete().eq('id', id)
     setTakes(takes.filter(t => t.id !== id))
+  }
+
+  const cancelSubscription = async () => {
+    if (!user) return
+    const confirmed = window.confirm('Are you sure you want to cancel your Premium subscription? You will lose access at the end of your billing period.')
+    if (!confirmed) return
+    setCanceling(true)
+    try {
+      const res = await fetch('/api/cancel-subscription', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: user.id }),
+      })
+      if (res.ok) {
+        setIsPremium(false)
+        setCanceled(true)
+      }
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setCanceling(false)
+    }
   }
 
   if (!user) return null
@@ -48,9 +83,48 @@ export default function ProfilePage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
       <div className="mb-8">
-        <h1 className="font-serif text-4xl font-bold mb-1">My Takes</h1>
+        <h1 className="font-serif text-4xl font-bold mb-1">My Profile</h1>
         <p className="text-brand-muted">{user.email}</p>
       </div>
+
+      {/* Subscription section */}
+      <div className="bg-white rounded-xl p-6 border border-black/5 mb-8">
+        <h2 className="font-serif text-2xl font-bold mb-4">Subscription</h2>
+        {isPremium ? (
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <span className="bg-brand-orange text-white text-xs font-bold px-3 py-1 rounded-full">PRO</span>
+              <span className="text-sm text-gray-600">You're on the Premium plan — unlimited takes, no ads.</span>
+            </div>
+            {canceled ? (
+              <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+                <p className="text-yellow-800 text-sm font-semibold">Your subscription has been canceled. You'll keep Premium access until the end of your billing period.</p>
+              </div>
+            ) : (
+              <button
+                onClick={cancelSubscription}
+                disabled={canceling}
+                className="text-sm text-red-400 hover:text-red-600 transition-colors disabled:opacity-50"
+              >
+                {canceling ? 'Canceling...' : 'Cancel subscription'}
+              </button>
+            )}
+          </div>
+        ) : (
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600 mb-1">You're on the Free plan.</p>
+              <p className="text-xs text-brand-muted">5 takes per day.</p>
+            </div>
+            <a href="/premium" className="bg-brand-orange text-white text-sm px-4 py-2 rounded-full hover:bg-orange-700 transition-colors font-semibold">
+              Upgrade to Premium →
+            </a>
+          </div>
+        )}
+      </div>
+
+      {/* Takes section */}
+      <h2 className="font-serif text-2xl font-bold mb-4">My Takes</h2>
 
       {loading && <p className="text-brand-muted">Loading...</p>}
 
