@@ -31,7 +31,7 @@ function PremiumContent() {
 
   const handleUpgrade = async () => {
     if (!user) {
-      supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin + '/premium' } })
+      supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin + '/auth/callback?next=/premium' } })
       return
     }
     setLoading(true)
