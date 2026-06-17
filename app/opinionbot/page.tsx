@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { User } from '@supabase/supabase-js'
@@ -52,7 +52,7 @@ export default function OpinionBotPage() {
           disabled={loading}
           className="bg-brand-orange text-white font-bold text-lg px-10 py-4 rounded-xl hover:bg-orange-700 transition-colors disabled:opacity-50 mb-4"
         >
-          {loading ? 'Redirecting...' : user ? 'Buy & Download — $4.99' : 'Sign in to Purchase'}
+          {loading ? 'Redirecting...' : user ? 'Buy & Download â€” $4.99' : 'Sign in to Purchase'}
         </button>
         <p className="text-xs text-gray-400">Secure payment via Stripe. Instant download after purchase.</p>
       </div>
@@ -60,7 +60,7 @@ export default function OpinionBotPage() {
       {/* Preview */}
       <div className="max-w-5xl mx-auto px-4 pb-16">
         <div className="bg-[#1a1a1a] rounded-2xl p-8 mb-16 text-center">
-          <p className="text-gray-400 text-sm uppercase tracking-widest mb-6">Live Preview — Try it now</p>
+          <p className="text-gray-400 text-sm uppercase tracking-widest mb-6">Live Preview â€” Try it now</p>
           <iframe
             src="/opinionbot.html"
             className="w-full rounded-xl border-0"
@@ -72,11 +72,11 @@ export default function OpinionBotPage() {
         {/* Features */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
           {[
-            { icon: '🤖', title: 'Fully Animated', desc: 'OpinionBot bobs, shakes, bounces and nods differently for each opinion mode. Eyes change color, mouth changes expression.' },
-            { icon: '🎯', title: '5 Opinion Modes', desc: 'Hot Take, Balanced, Devil\'s Advocate, Contrarian, and Expert Analysis — each with unique animations and responses.' },
-            { icon: '💬', title: 'Reacts to Your Topics', desc: 'Type any topic and OpinionBot instantly reacts with a sharp perspective in whatever mode you choose.' },
-            { icon: '🌐', title: 'Embed Anywhere', desc: 'Drop a single HTML file into any website. No dependencies, no frameworks, no setup required.' },
-            { icon: '⚡', title: 'Instant Download', desc: 'After purchase you get a single HTML file. Open it in any browser or embed it on your site immediately.' },
-            { icon: '♾️', title: 'Yours Forever', desc: 'One-time purchase. No subscriptions, no licenses, no expiry. Use it on as many sites as you want.' },
+            { icon: 'ðŸ¤–', title: 'Fully Animated', desc: 'OpinionBot bobs, shakes, bounces and nods differently for each opinion mode. Eyes change color, mouth changes expression.' },
+            { icon: 'ðŸŽ¯', title: '5 Opinion Modes', desc: 'Hot Take, Balanced, Devil\'s Advocate, Contrarian, and Expert Analysis â€” each with unique animations and responses.' },
+            { icon: 'ðŸ’¬', title: 'Reacts to Your Topics', desc: 'Type any topic and OpinionBot instantly reacts with a sharp perspective in whatever mode you choose.' },
+            { icon: 'ðŸŒ', title: 'Embed Anywhere', desc: 'Drop a single HTML file into any website. No dependencies, no frameworks, no setup required.' },
+            { icon: 'âš¡', title: 'Instant Download', desc: 'After purchase you get a single HTML file. Open it in any browser or embed it on your site immediately.' },
+            { icon: 'â™¾ï¸', title: 'Yours Forever', desc: 'One-time purchase. No subscriptions, no licenses, no expiry. Use it on as many sites as you want.' },
           ].map(f => (
             <div
