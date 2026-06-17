@@ -26,7 +26,6 @@ const BOOKS = [
 ]
 
 const TOOLS = [
-  { tag: 'AI Writing', title: 'Claude Pro', desc: 'Upgrade for unlimited takes, longer responses, and research.', link: 'https://claude.ai', cta: 'Try Claude Pro →' },
   { tag: 'Research', title: 'Audible', desc: 'Listen to the books above and thousands more. First month free.', link: 'https://www.audible.com', cta: 'Try Free →' },
   { tag: 'Note-Taking', title: 'Notion', desc: 'Capture and organise your best takes, arguments, and research.', link: 'https://www.notion.so', cta: 'Get Notion →' },
 ]
@@ -38,7 +37,6 @@ export default function Home() {
   const [result, setResult] = useState<{ headline: string; body: string } | null>(null)
   const [user, setUser] = useState<User | null>(null)
   const [shared, setShared] = useState(false)
-  const [email, setEmail] = useState('')
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUser(data.user))
@@ -225,7 +223,7 @@ export default function Home() {
           <section>
             <h2 className="font-serif text-2xl font-bold border-b-2 border-black pb-2 mb-1">Tools for Deep Thinkers</h2>
             <p className="text-xs text-gray-400 mb-4"><em>(Affiliate partnerships — we may earn a commission at no extra cost to you.)</em></p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {TOOLS.map(t => (
                 <div key={t.title} className="bg-white border border-gray-200 rounded-xl p-5 flex flex-col gap-2">
                   <span className="text-xs font-bold uppercase tracking-wider text-yellow-600">{t.tag}</span>
@@ -243,8 +241,6 @@ export default function Home() {
 
         {/* Sidebar */}
         <div className="space-y-6">
-          {/* Sidebar ad 300x250 */}
-
           {/* Newsletter */}
           <div className="bg-[#1c1a16] rounded-xl p-5">
             <h3 className="font-serif text-lg font-bold text-[#f0ede6] mb-1">Daily Takes — Free</h3>
@@ -270,7 +266,7 @@ export default function Home() {
                 'AI will replace most creative jobs by 2030',
                 'Social media is making us measurably dumber',
                 'Remote work wins on productivity — the data is in',
-                'Bitcoin will hit $1M. Here\'s why skeptics are wrong.',
+                "Bitcoin will hit $1M. Here's why skeptics are wrong.",
                 'College degrees are no longer worth the cost',
               ].map((title, i) => (
                 <li key={i} className="flex gap-3 cursor-pointer group" onClick={() => generate(title)}>
@@ -280,6 +276,8 @@ export default function Home() {
               ))}
             </ul>
           </div>
+        </div>
+      </div>
 
       {/* Footer */}
       <footer className="border-t border-gray-300 bg-[#F0EDE6] py-8 px-4 text-center">
