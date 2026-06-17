@@ -87,13 +87,6 @@ export default function Home() {
         🔥 Get Hot Takes, Contrarian Views, or Devil's Advocate perspectives on any topic — instantly.
       </div>
 
-      {/* Leaderboard ad */}
-      <div className="max-w-6xl mx-auto px-4 mt-4">
-        <div className="bg-gray-200 border border-dashed border-gray-400 rounded flex items-center justify-center h-20 text-xs text-gray-400 uppercase tracking-wider">
-          Advertisement · thoughtofview.com
-        </div>
-      </div>
-
       {/* Hero */}
       <div className="max-w-6xl mx-auto px-4 pt-10 pb-4">
         <p className="text-xs font-sans uppercase tracking-widest text-brand-muted mb-4">AI Opinion Engine</p>
@@ -177,11 +170,6 @@ export default function Home() {
         {/* Main content */}
         <div className="lg:col-span-2 space-y-10">
 
-          {/* In-feed ad */}
-          <div className="bg-gray-200 border border-dashed border-gray-400 rounded flex items-center justify-center h-20 text-xs text-gray-400 uppercase tracking-wider">
-            Advertisement
-          </div>
-
           {/* Trending Topics */}
           <section>
             <h2 className="font-serif text-2xl font-bold border-b-2 border-black pb-2 mb-4">Trending Topics</h2>
@@ -213,11 +201,6 @@ export default function Home() {
               ))}
             </div>
           </section>
-
-          {/* In-content ad */}
-          <div className="bg-gray-200 border border-dashed border-gray-400 rounded flex items-center justify-center h-40 text-xs text-gray-400 uppercase tracking-wider">
-            Advertisement — Responsive Rectangle
-          </div>
 
           {/* Recommended Reads */}
           <section>
@@ -261,9 +244,6 @@ export default function Home() {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Sidebar ad 300x250 */}
-          <div className="bg-gray-200 border border-dashed border-gray-400 rounded flex items-center justify-center text-xs text-gray-400 uppercase tracking-wider" style={{height: '250px'}}>
-            Advertisement 300×250
-          </div>
 
           {/* Newsletter */}
           <div className="bg-[#1c1a16] rounded-xl p-5">
@@ -300,13 +280,6 @@ export default function Home() {
               ))}
             </ul>
           </div>
-
-          {/* Sidebar ad 300x600 */}
-          <div className="bg-gray-200 border border-dashed border-gray-400 rounded flex items-center justify-center text-xs text-gray-400 uppercase tracking-wider" style={{height: '600px'}}>
-            Advertisement 300×600
-          </div>
-        </div>
-      </div>
 
       {/* Footer */}
       <footer className="border-t border-gray-300 bg-[#F0EDE6] py-8 px-4 text-center">
