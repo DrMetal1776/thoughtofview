@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpinionBot — Thought of View</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0d0d0d; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 2rem 1rem; font-family: 'Segoe UI', sans-serif; }
+    .app { max-width: 480px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
+    .title { color: #fff; font-size: 22px; font-weight: 700; letter-spacing: 1px; text-align: center; }
+    .title span { color: #C2522B; }
+    .stage { position: relative; margin-top: 80px; }
+    .speech-bubble { position: absolute; top: -75px; left: 50%; transform: translateX(-50%); background: #1a1a1a; border: 1px solid #333; color: #fff; font-size: 13px; padding: 10px 14px; border-radius: 12px; width: 240px; text-align: center; line-height: 1.5; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .speech-bubble::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); border: 8px solid transparent; border-bottom: none; border-top-color: #1a1a1a; }
+    .speech-bubble.visible { opacity: 1; }
+    @keyframes idle-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes hot-shake { 0%,100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg) translateY(-6px); } }
+    @keyframes think-pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05) translateY(-4px); } }
+    @keyframes devil-bounce { 0%,100% { transform: rotate(0deg); } 33% { transform: rotate(-6deg) translateY(-8px); } 66% { transform: rotate(6deg) translateY(-4px); } }
+    @keyframes expert-nod { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-5px) rotate(-2deg); } }
+    @keyframes eye-blink { 0%,90%,100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+    @keyframes antenna-sway { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(8deg); } }
+    @keyframes glow-pulse { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
+    .bot-body { animation: idle-bob 2.5s ease-in-out infinite; }
+    .bot-body.hot { animation: hot-shake 0.4s ease-in-out infinite; }
+    .bot-body.balanced { animation: think-pulse 2s ease-in-out infinite; }
+    .bot-body.devil { animation: devil-bounce 0.8s ease-in-out infinite; }
+    .bot-body.contrarian { animation: think-pulse 1.5s ease-in-out infinite reverse; }
+    .bot-body.expert { animation: expert-nod 2s ease-in-out infinite; }
+    .eye-left, .eye-right { animation: eye-blink 4s infinite; }
+    .antenna { transform-origin: 80px 20px; animation: antenna-sway 2s ease-in-out infinite; }
+    .chest-light { animation: glow-pulse 1.5s ease-in-out infinite; }
+    .angle-btns { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+    .angle-btn { padding: 8px 14px; border-radius: 20px; border: 1.5px solid #444; background: #1a1a1a; color: #ccc; font-size: 13px; cursor: pointer; transition: all 0.2s; font-weight: 500; }
+    .angle-btn:hover { border-color: #C2522B; color: #C2522B; }
+    .angle-btn.active { background: #C2522B; color: white; border-color: #C2522B; }
+    .topic-row { display: flex; gap: 8px; width: 100%; }
+    .topic-row input { flex: 1; padding: 10px 14px; border-radius: 10px; border: 1.5px solid #444; background: #1a1a1a; color: white; font-size: 14px; outline: none; }
+    .topic-row input:focus { border-color: #C2522B; }
+    .topic-row input::placeholder { color: #555; }
+    .topic-row button { padding: 10px 18px; background: #C2522B; color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .topic-row button:hover { background: #a03e1f; }
+    .mode-label { font-size: 13px; color: #666; text-align: center; }
+    .mode-label span { font-weight: 600; color: #C2522B; }
+    .credit { font-size: 11px; color: #444; text-align: center; }
+    .credit a { color: #C2522B; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="title">Opinion<span>Bot</span></div>
+    <div class="stage">
+      <div class="speech-bubble" id="bubble">I have opinions about everything. Try me.</div>
+      <svg width="160" height="200" viewBox="0 0 160 200" xmlns="http://www.w3.org/2000/svg">
+        <g class="bot-body" id="botBody">
+          <g class="antenna">
+            <line x1="80" y1="20" x2="80" y2="45" stroke="#555" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="80" cy="15" r="7" fill="#C2522B" id="antennaLight"/>
+          </g>
+          <rect x="35" y="45" width="90" height="70" rx="16" fill="#2a2a2a"/>
+          <rect x="42" y="52" width="76" height="56" rx="10" fill="#1a1a1a"/>
+          <ellipse class="eye-left" cx="62" cy="72" rx="10" ry="10" fill="#00e5ff" id="eyeL"/>
+          <ellipse class="eye-right" cx="98" cy="72" rx="10" ry="10" fill="#00e5ff" id="eyeR"/>
+          <ellipse cx="62" cy="72" rx="5" ry="5" fill="#003a42"/>
+          <ellipse cx="98" cy="72" rx="5" ry="5" fill="#003a42"/>
+          <path d="M58 88 Q80 98 102 88" stroke="#555" stroke-width="3" fill="none" stroke-linecap="round" id="mouth"/>
+          <rect x="25" y="120" width="110" height="60" rx="14" fill="#2a2a2a"/>
+          <rect x="33" y="128" width="94" height="44" rx="8" fill="#1a1a1a"/>
+          <circle class="chest-light" cx="60" cy="150" r="8" fill="#C2522B" id="chestLight"/>
+          <rect x="75" y="143" width="40" height="6" rx="3" fill="#333"/>
+          <rect x="75" y="153" width="30" height="6" rx="3" fill="#333"/>
+          <rect x="15" y="122" width="12" height="40" rx="6" fill="#333"/>
+          <rect x="133" y="122" width="12" height="40" rx="6" fill="#333"/>
+          <rect x="50" y="178" width="20" height="18" rx="6" fill="#333"/>
+          <rect x="90" y="178" width="20" height="18" rx="6" fill="#333"/>
+        </g>
+      </svg>
+    </div>
+    <div class="angle-btns">
+      <button class="angle-btn active" onclick="setAngle('hot', this)">🔥 Hot Take</button>
+      <button class="angle-btn" onclick="setAngle('balanced', this)">⚖️ Balanced</button>
+      <button class="angle-btn" onclick="setAngle('devil', this)">😈 Devil's Advocate</button>
+      <button class="angle-btn" onclick="setAngle('contrarian', this)">↩️ Contrarian</button>
+      <button class="angle-btn" onclick="setAngle('expert', this)">🎓 Expert</button>
+    </div>
+    <div class="topic-row">
+      <input type="text" id="topicInput" placeholder="Enter any topic..." maxlength="60"/>
+      <button onclick="react()">React!</button>
+    </div>
+    <div class="mode-label" id="modeLabel">Mode: <span>Hot Take</span> — OpinionBot is fired up!</div>
+    <div class="credit">Powered by <a href="https://thoughtofview.com" target="_blank">ThoughtofView.com</a></div>
+  </div>
+  <script>
+    let currentAngle = 'hot';
+    const botBody = document.getElementById('botBody');
+    const bubble = document.getElementById('bubble');
+    const mouth = document.getElementById('mouth');
+    const eyeL = document.getElementById('eyeL');
+    const eyeR = document.getElementById('eyeR');
+    const chestLight = document.getElementById('chestLight');
+    const antennaLight = document.getElementById('antennaLight');
+    const modeLabel = document.getElementById('modeLabel');
+    const configs = {
+      hot: { eyeColor: '#ff4444', chestColor: '#ff4444', antennaColor: '#ff4444', mouthPath: 'M58 92 Q80 82 102 92', label: 'Hot Take', desc: 'OpinionBot is fired up!', bubbles: ['This is OBJECTIVELY the most important issue of our time.', 'Hot take: everything you think you know about this is backwards.', 'I said what I said. No notes. No apologies.', 'The consensus is wrong. It has always been wrong. Fight me.'] },
+      balanced: { eyeColor: '#00e5ff', chestColor: '#4488ff', antennaColor: '#4488ff', mouthPath: 'M62 88 Q80 92 98 88', label: 'Balanced', desc: 'OpinionBot is being fair.', bubbles: ['Both sides raise valid points worth considering.', 'A nuanced take: there are legitimate arguments here.', 'The truth lies somewhere in the complicated middle.', 'Reasonable people often disagree on this — and that\'s okay.'] },
+      devil: { eyeColor: '#ff00ff', chestColor: '#aa00aa', antennaColor: '#ff00ff', mouthPath: 'M58 86 Q65 98 80 94 Q95 98 102 86', label: "Devil's Advocate", desc: 'OpinionBot is stirring the pot!', bubbles: ['What if this is exactly what they WANT you to think?', 'The unpopular position here is actually more defensible.', 'I don\'t believe this, but someone has to say it...', 'The most hated opinion on this might actually be correct.'] },
+      contrarian: { eyeColor: '#ffaa00', chestColor: '#ff8800', antennaColor: '#ffaa00', mouthPath: 'M60 92 Q80 84 100 92', label: 'Contrarian', desc: 'OpinionBot disagrees with everyone.', bubbles: ['The mainstream view requires no thinking whatsoever.', 'Everyone agrees? That alone should make you suspicious.', 'Conventional wisdom here is laziness dressed as insight.', 'The crowd is wrong. The crowd is almost always wrong.'] },
+      expert: { eyeColor: '#44ff88', chestColor: '#22aa55', antennaColor: '#44ff88', mouthPath: 'M60 88 Q80 96 100 88', label: 'Expert Analysis', desc: 'OpinionBot is being thorough.', bubbles: ['Three key factors determine outcomes here: incentives, feedback loops, and time horizons.', 'The data is more nuanced than the headlines suggest.', 'From a systems perspective, most commentary misses the upstream causes.', 'Academic consensus and public perception diverge significantly here.'] }
+    };
+    function setAngle(angle, btn) {
+      currentAngle = angle;
+      document.querySelectorAll('.angle-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cfg = configs[angle];
+      botBody.className = 'bot-body ' + angle;
+      eyeL.setAttribute('fill', cfg.eyeColor);
+      eyeR.setAttribute('fill', cfg.eyeColor);
+      chestLight.setAttribute('fill', cfg.chestColor);
+      antennaLight.setAttribute('fill', cfg.antennaColor);
+      mouth.setAttribute('d', cfg.mouthPath);
+      modeLabel.innerHTML = 'Mode: <span>' + cfg.label + '</span> — ' + cfg.desc;
+      showBubble(cfg.bubbles[Math.floor(Math.random() * cfg.bubbles.length)]);
+    }
+    function react() {
+      const topic = document.getElementById('topicInput').value.trim();
+      const cfg = configs[currentAngle];
+      const b = cfg.bubbles[Math.floor(Math.random() * cfg.bubbles.length)];
+      showBubble(topic ? topic + '? ' + b : b);
+      botBody.style.animation = 'none';
+      setTimeout(() => { botBody.className = 'bot-body ' + currentAngle; }, 50);
+    }
+    function showBubble(text) {
+      bubble.textContent = text;
+      bubble.classList.add('visible');
+      clearTimeout(window._t);
+      window._t = setTimeout(() => bubble.classList.remove('visible'), 5000);
+    }
+    setTimeout(() => showBubble('I have opinions about everything. Try me.'), 800);
+  </script>
+</body>
+</html>
