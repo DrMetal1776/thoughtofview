@@ -18,6 +18,7 @@ function PremiumContent() {
       setUser(data.user)
       if (data.user) checkPremium(data.user.id)
     })
+    if (success) setIsPremium(true)
   }, [])
 
   const checkPremium = async (userId: string) => {
