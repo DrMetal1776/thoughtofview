@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import type { User } from '@supabase/supabase-js'
@@ -29,9 +29,9 @@ export default function OpinionBotPage() {
   return (
     <div className="min-h-screen bg-[#F0EDE6]">
       <div className="max-w-5xl mx-auto px-4 pt-16 pb-8 text-center">
-        <div className="inline-block bg-brand-orange text-white text-xs font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-wider">New Digital Product</div>
+        <div className="inline-block bg-brand-orange text-white text-xs font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-wider">New Desktop App</div>
         <h1 className="font-serif text-6xl font-bold mb-4">Meet OpinionBot</h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">An animated AI-powered robot that reacts to any topic with hot takes, devil advocate arguments, and expert analysis. Embed on your site or run standalone.</p>
+        <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">An animated AI-powered desktop robot that reacts to any topic with hot takes, devil's advocate arguments, and expert analysis. Available for Windows and Mac.</p>
         <div className="flex items-center justify-center gap-4 mb-12">
           <div className="text-5xl font-bold">$4.99</div>
           <div className="text-left">
@@ -54,8 +54,8 @@ export default function OpinionBotPage() {
             { title: 'Fully Animated', desc: 'OpinionBot bobs, shakes, and bounces differently for each opinion mode.' },
             { title: '5 Opinion Modes', desc: 'Hot Take, Balanced, Devils Advocate, Contrarian, and Expert Analysis.' },
             { title: 'Reacts to Topics', desc: 'Type any topic and OpinionBot instantly reacts with a sharp perspective.' },
-            { title: 'Embed Anywhere', desc: 'Drop a single HTML file into any website. No dependencies required.' },
-            { title: 'Instant Download', desc: 'After purchase you get a single HTML file ready to use immediately.' },
+            { title: 'Windows & Mac', desc: 'Native desktop app for both Windows and Mac. Download and run in seconds.' },
+            { title: 'Instant Download', desc: 'After purchase you get installers for both platforms, ready to use immediately.' },
             { title: 'Yours Forever', desc: 'One-time purchase. No subscriptions, no licenses, no expiry.' },
           ].map(f => (
             <div key={f.title} className="bg-white rounded-xl p-6 border border-gray-100">
@@ -66,7 +66,7 @@ export default function OpinionBotPage() {
         </div>
         <div className="text-center">
           <h2 className="font-serif text-4xl font-bold mb-4">Get OpinionBot today</h2>
-          <p className="text-gray-500 mb-8">One file. One price. Infinite opinions.</p>
+          <p className="text-gray-500 mb-8">Windows and Mac. One price. Infinite opinions.</p>
           <button onClick={handlePurchase} disabled={loading} className="bg-brand-orange text-white font-bold text-lg px-10 py-4 rounded-xl hover:bg-orange-700 transition-colors disabled:opacity-50">
             {loading ? 'Redirecting...' : user ? 'Buy and Download - $4.99' : 'Sign in to Purchase'}
           </button>
