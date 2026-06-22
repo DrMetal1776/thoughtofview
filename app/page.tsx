@@ -290,7 +290,7 @@ export default function Home() {
           <a href="/advertise" className="hover:text-black">Advertise</a>
         </div>
         <p className="text-xs text-gray-400">
-          © 2025 ThoughtofView.com · AI-generated content for entertainment and informational purposes.<br />
+          © 2026 ThoughtofView.com · AI-generated content for entertainment and informational purposes.<br />
           This site contains affiliate links and advertising. <a href="/disclosure" className="underline">Disclosure</a>.
         </p>
       </footer>
