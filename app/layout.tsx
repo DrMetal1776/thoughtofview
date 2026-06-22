@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     default: 'Thought of View — AI-Powered Perspectives on Anything',
     template: '%s | Thought of View',
   },
-  description: 'Get instant AI-generated hot takes, balanced analysis, devil\'s advocate arguments, and contrarian views on any topic. Sharp AI perspectives on politics, tech, finance, and culture.',
+  description: 'Get instant AI-generated hot takes, balanced analysis, and contrarian views on any topic.',
   keywords: ['AI opinions', 'hot takes', 'AI perspectives', 'debate', 'contrarian views', 'critical thinking', 'AI analysis'],
   authors: [{ name: 'Thought of View' }],
   creator: 'Thought of View',
