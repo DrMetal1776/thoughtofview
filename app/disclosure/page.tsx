@@ -1,15 +1,91 @@
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Disclosure',
+  description: 'Advertising, affiliate, and AI content disclosure for Thought of View.',
+}
+
+const LAST_UPDATED = 'June 22, 2026'
+
 export default function DisclosurePage() {
   return (
-    <div className="max-w-3xl mx-auto px-4 py-16">
-      <h1 className="font-serif text-5xl font-bold mb-4">Affiliate Disclosure</h1>
-      <p className="text-gray-500 mb-10">Last updated: June 15, 2026</p>
-      <div className="space-y-6 text-gray-700 leading-relaxed">
-        <p>Thought of View participates in affiliate marketing programs. This means we may earn a commission when you click on certain links and make a purchase, at no additional cost to you.</p>
-        <p>Specifically, we are a participant in the <strong>Amazon Services LLC Associates Program</strong>, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com.</p>
-        <p>We also display advertising through <strong>Google AdSense</strong>. Google may use cookies to serve ads based on your prior visits to this website and other sites.</p>
-        <p>We only recommend products and services we genuinely believe are valuable. Our editorial content is not influenced by advertisers or affiliate relationships.</p>
-        <p>If you have any questions about our affiliate relationships, please <a href="/contact" className="text-orange-600 hover:underline">contact us</a>.</p>
+    <main style={{ minHeight: '100vh', backgroundColor: '#0d1117', color: '#e6edf3', fontFamily: 'system-ui, sans-serif' }}>
+      <div style={{ maxWidth: '760px', margin: '0 auto', padding: '80px 24px' }}>
+
+        {/* Header */}
+        <div style={{ marginBottom: '56px' }}>
+          <p style={{ color: '#4dd9c0', fontSize: '13px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
+            Legal
+          </p>
+          <h1 style={{ fontSize: '48px', fontWeight: 700, lineHeight: 1.15, margin: '0 0 16px', color: '#ffffff' }}>
+            Disclosure
+          </h1>
+          <p style={{ fontSize: '15px', color: '#8b949e', margin: 0 }}>Last updated: {LAST_UPDATED}</p>
+        </div>
+
+        <div style={{ height: '1px', backgroundColor: '#21262d', marginBottom: '48px' }} />
+
+        <p style={{ fontSize: '17px', color: '#8b949e', lineHeight: 1.8, marginBottom: '48px' }}>
+          In the interest of transparency, we want to be clear about how Thought of View operates, how it generates revenue, and how its content is created.
+        </p>
+
+        {/* Advertising */}
+        <section style={{ marginBottom: '40px' }}>
+          <h2 style={{ fontSize: '22px', fontWeight: 600, color: '#ffffff', marginBottom: '16px' }}>Advertising</h2>
+          <p style={{ fontSize: '16px', color: '#8b949e', lineHeight: 1.8, margin: '0 0 12px' }}>
+            Thought of View may display advertisements served by Google AdSense and other advertising networks. These ads help support the free operation of this platform.
+          </p>
+          <p style={{ fontSize: '16px', color: '#8b949e', lineHeight: 1.8, margin: 0 }}>
+            Google AdSense may use cookies and web beacons to serve ads based on your prior visits to this or other websites. You can opt out of personalized advertising by visiting{' '}
+            <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" style={{ color: '#4dd9c0', textDecoration: 'none' }}>
+              Google's Ad Settings
+            </a>.
+          </p>
+        </section>
+
+        {/* Affiliate links */}
+        <section style={{ marginBottom: '40px' }}>
+          <h2 style={{ fontSize: '22px', fontWeight: 600, color: '#ffffff', marginBottom: '16px' }}>Affiliate links</h2>
+          <p style={{ fontSize: '16px', color: '#8b949e', lineHeight: 1.8, margin: '0 0 12px' }}>
+            Thought of View participates in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com.
+          </p>
+          <p style={{ fontSize: '16px', color: '#8b949e', lineHeight: 1.8, margin: 0 }}>
+            This means that if you click on an Amazon link on this site and make a purchase, we may earn a small commission at no additional cost to you. Our Amazon associate tag is <span style={{ color: '#ffffff', fontFamily: 'monospace' }}>drmetal1776-20</span>.
+          </p>
+        </section>
+
+        {/* AI-generated content */}
+        <section style={{ marginBottom: '40px' }}>
+          <h2 style={{ fontSize: '22px', fontWeight: 600, color: '#ffffff', marginBottom: '16px' }}>AI-generated content</h2>
+          <p style={{ fontSize: '16px', color: '#8b949e', lineHeight: 1.8, margin: '0 0 12px' }}>
+            The opinions, perspectives, hot takes, and analysis on Thought of View are generated by artificial intelligence. This content is produced for informational and entertainment purposes only.
+          </p>
+          <p style={{ fontSize: '16px', color: '#8b949e', lineHeight: 1.8, margin: 0 }}>
+            AI-generated content does not represent the views of Thought of View or its operators, and should not be relied upon as professional, legal, financial, or medical advice.
+          </p>
+        </section>
+
+        {/* Premium & purchases */}
+        <section style={{ marginBottom: '40px' }}>
+          <h2 style={{ fontSize: '22px', fontWeight: 600, color: '#ffffff', marginBottom: '16px' }}>Premium subscriptions and purchases</h2>
+          <p style={{ fontSize: '16px', color: '#8b949e', lineHeight: 1.8, margin: 0 }}>
+            Thought of View offers a Premium subscription at $5.00/month and OpinionBot as a one-time purchase at $4.99. These are paid products. Revenue from these purchases supports the continued development and operation of the platform.
+          </p>
+        </section>
+
+        <div style={{ height: '1px', backgroundColor: '#21262d', marginBottom: '40px' }} />
+
+        {/* Contact */}
+        <section>
+          <p style={{ fontSize: '16px', color: '#8b949e', lineHeight: 1.8, margin: 0 }}>
+            Questions about this disclosure? Contact us at{' '}
+            <a href="mailto:thoughtofview@gmail.com" style={{ color: '#4dd9c0', textDecoration: 'none' }}>
+              thoughtofview@gmail.com
+            </a>.
+          </p>
+        </section>
+
       </div>
-    </div>
+    </main>
   )
 }
