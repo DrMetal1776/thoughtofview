@@ -200,6 +200,41 @@ export default function Home() {
             </div>
           </section>
 
+          {/* OpinionBot Promo */}
+          <section className="bg-[#1A1A1A] rounded-2xl p-6 md:p-8 border border-[#2a2a2a]">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-xs font-bold uppercase tracking-widest text-brand-orange">Desktop App</span>
+            </div>
+            <h2 className="font-serif text-3xl md:text-4xl font-bold text-white leading-tight mb-3">
+              Meet OpinionBot 🤖
+            </h2>
+            <p className="text-[#aaa] text-base leading-relaxed mb-6 max-w-lg">
+              Get AI-powered hot takes, balanced analysis, and contrarian views — right from your desktop. No browser needed. OpinionBot sits in your taskbar, ready whenever you need a sharp perspective.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+              {[
+                { icon: '⚡', title: 'Instant access', desc: 'One click from your taskbar — no loading, no tabs.' },
+                { icon: '🖥️', title: 'Works offline', desc: 'Generate takes without switching away from your work.' },
+                { icon: '🪟', title: 'Windows & Mac', desc: 'Native desktop app for both platforms.' },
+              ].map(f => (
+                <div key={f.title} className="bg-[#2A2A2A] rounded-xl p-4">
+                  <div className="text-xl mb-2">{f.icon}</div>
+                  <p className="text-white font-semibold text-sm mb-1">{f.title}</p>
+                  <p className="text-[#888] text-xs leading-relaxed">{f.desc}</p>
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <a
+                href="/opinionbot"
+                className="bg-brand-orange text-white font-bold px-8 py-3 rounded-xl hover:bg-orange-700 transition-colors text-sm uppercase tracking-wider"
+              >
+                Get OpinionBot — $4.99
+              </a>
+              <span className="text-[#666] text-xs">One-time purchase · No subscription required</span>
+            </div>
+          </section>
+
           {/* Recommended Reads */}
           <section>
             <h2 className="font-serif text-2xl font-bold border-b-2 border-black pb-2 mb-1">Recommended Reads</h2>
