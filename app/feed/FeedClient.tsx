@@ -94,7 +94,7 @@ export default function FeedClient() {
     setTakes(takes.map(t => t.id === id ? { ...t, upvotes: current + 1 } : t))
     const newSet = new Set(upvotedIds).add(id)
     setUpvotedIds(newSet)
-    localStorage.setItem('upvoted_takes', JSON.stringify([...newSet]))
+    localStorage.setItem('upvoted_takes', JSON.stringify(Array.from(newSet)))
   }
 
   const shareToX = (take: Take) => {
