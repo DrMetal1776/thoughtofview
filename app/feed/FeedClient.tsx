@@ -183,7 +183,7 @@ export default function FeedClient() {
                   <button key={a} onClick={() => setAngleFilter(a)}
                     className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors border ${
                       angleFilter === a
-                        ? 'bg-[#e85d3a] text-white border-[#e85d3a]'
+                        ? 'bg-[#0d1117] text-white border-[#0d1117]'
                         : 'bg-white text-gray-600 border-black/10 hover:border-black/30'
                     }`}>
                     {a !== 'All' && ANGLE_ICONS[a]} {a}
