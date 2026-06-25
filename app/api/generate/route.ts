@@ -23,7 +23,6 @@ export async function POST(req: NextRequest) {
 
   // Check rate limit for logged-in users
   if (userId) {
-    // Check if premium
     const { data: sub } = await supabase
       .from('subscriptions')
       .select('status')
@@ -33,7 +32,6 @@ export async function POST(req: NextRequest) {
     const isPremium = sub?.status === 'active'
 
     if (!isPremium) {
-      // Check daily usage
       const today = new Date().toISOString().split('T')[0]
       const { data: usage } = await supabase
         .from('take_usage')
@@ -43,10 +41,12 @@ export async function POST(req: NextRequest) {
         .single()
 
       if (usage && usage.count >= 5) {
-        return NextResponse.json({ error: 'Daily limit reached. Upgrade to Premium for unlimited takes!', limitReached: true }, { status: 429 })
+        return NextResponse.json(
+          { error: 'Daily limit reached. Upgrade to Premium for unlimited takes!', limitReached: true },
+          { status: 429 }
+        )
       }
 
-      // Increment usage
       await supabase.from('take_usage').upsert({
         user_id: userId,
         date: today,
@@ -66,21 +66,54 @@ HEADLINE: [Your punchy headline here]
 BODY:
 [Your opinion content here]`
 
-  const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: 'llama-3.3-70b-versatile',
-      max_tokens: 1000,
-      messages: [{ role: 'user', content: prompt }],
-    }),
-  })
+  let groqRes: Response
+  try {
+    groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }],
+      }),
+    })
+  } catch (err) {
+    console.error('Groq fetch error:', err)
+    return NextResponse.json(
+      { error: 'Failed to connect to AI. Please try again in a moment.' },
+      { status: 503 }
+    )
+  }
+
+  // Handle Groq rate limit
+  if (groqRes.status === 429) {
+    return NextResponse.json(
+      { error: 'The AI is a little overwhelmed right now. Wait a moment and try again!', rateLimited: true },
+      { status: 429 }
+    )
+  }
+
+  // Handle other Groq errors
+  if (!groqRes.ok) {
+    console.error('Groq error status:', groqRes.status)
+    return NextResponse.json(
+      { error: 'AI generation failed. Please try again.' },
+      { status: 500 }
+    )
+  }
 
   const data = await groqRes.json()
   const text = data.choices?.[0]?.message?.content || ''
+
+  if (!text) {
+    return NextResponse.json(
+      { error: 'No response from AI. Please try again.' },
+      { status: 500 }
+    )
+  }
 
   const headlineMatch = text.match(/HEADLINE:\s*(.+)/)
   const bodyMatch = text.match(/BODY:\s*([\s\S]+)/)
