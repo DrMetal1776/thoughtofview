@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     default: 'Thought of View — AI-Powered Perspectives on Anything',
     template: '%s | Thought of View',
   },
-  description: 'Get instant AI-generated hot takes, balanced analysis, and contrarian views on any topic.',
+  description: 'AI-powered hot takes, balanced analysis & contrarian views on any topic. Five angles. Free to start.',
   keywords: ['AI opinions', 'hot takes', 'AI perspectives', 'debate', 'contrarian views', 'critical thinking', 'AI analysis'],
   authors: [{ name: 'Thought of View' }],
   creator: 'Thought of View',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     url: 'https://www.thoughtofview.com',
     siteName: 'Thought of View',
     title: 'Thought of View — AI-Powered Perspectives on Anything',
-    description: 'Get instant AI-generated hot takes, balanced analysis, and contrarian views on any topic.',
+    description: 'AI-powered hot takes, balanced analysis & contrarian views on any topic. Five angles. Free to start.',
     images: [
       {
         url: '/og-image.png',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Thought of View — AI-Powered Perspectives on Anything',
-    description: 'Get instant AI-generated hot takes, balanced analysis, and contrarian views on any topic.',
+    description: 'AI-powered hot takes, balanced analysis & contrarian views on any topic. Five angles. Free to start.',
     images: ['/og-image.png'],
     creator: '@thoughtofview',
   },
@@ -47,9 +47,6 @@ export const metadata: Metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
-  },
-  verification: {
-    google: '',  // Add your Google Search Console verification code here
   },
 }
 
