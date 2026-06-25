@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import Script from 'next/script'
+import Link from 'next/link'
 import type { User } from '@supabase/supabase-js'
 
 const ANGLES = ['Hot Take', 'Balanced', "Devil's Advocate", 'Contrarian', 'Expert Analysis']
@@ -11,6 +12,13 @@ const ANGLE_ICONS: Record<string, string> = {
   "Devil's Advocate": '😈',
   'Contrarian': '↩️',
   'Expert Analysis': '🎓',
+}
+const ANGLE_COLORS: Record<string, string> = {
+  'Hot Take': 'bg-[#e85d3a]',
+  'Balanced': 'bg-[#3a7bd5]',
+  "Devil's Advocate": 'bg-[#7c3aed]',
+  'Contrarian': 'bg-[#d97706]',
+  'Expert Analysis': 'bg-[#059669]',
 }
 
 const TRENDING_TOPICS = [
@@ -30,6 +38,15 @@ const TOOLS = [
   { tag: 'Note-Taking', title: 'Notion', desc: 'Capture and organise your best takes, arguments, and research.', link: 'https://www.notion.so', cta: 'Get Notion →' },
 ]
 
+type Take = {
+  id: string
+  topic: string
+  angle: string
+  headline: string
+  body: string
+  upvotes: number
+}
+
 export default function Home() {
   const [topic, setTopic] = useState('')
   const [angle, setAngle] = useState('Hot Take')
@@ -37,11 +54,30 @@ export default function Home() {
   const [result, setResult] = useState<{ headline: string; body: string } | null>(null)
   const [user, setUser] = useState<User | null>(null)
   const [shared, setShared] = useState(false)
+  const [takesCount, setTakesCount] = useState<number | null>(null)
+  const [featuredTakes, setFeaturedTakes] = useState<Take[]>([])
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUser(data.user))
     supabase.auth.onAuthStateChange((_e, session) => setUser(session?.user ?? null))
+    fetchStats()
   }, [])
+
+  const fetchStats = async () => {
+    // Get total takes count
+    const { count } = await supabase
+      .from('takes')
+      .select('*', { count: 'exact', head: true })
+    setTakesCount(count || 0)
+
+    // Get top 3 most upvoted takes
+    const { data } = await supabase
+      .from('takes')
+      .select('id, topic, angle, headline, body, upvotes')
+      .order('upvotes', { ascending: false })
+      .limit(3)
+    setFeaturedTakes(data || [])
+  }
 
   const generate = async (topicOverride?: string) => {
     const t = topicOverride || topic
@@ -58,7 +94,10 @@ export default function Home() {
       })
       const data = await res.json()
       setResult(data)
-      if (user?.id) setShared(true)
+      if (user?.id) {
+        setShared(true)
+        setTakesCount(prev => prev !== null ? prev + 1 : prev)
+      }
     } catch (e) {
       console.error(e)
     } finally {
@@ -69,6 +108,11 @@ export default function Home() {
   const shareText = result
     ? `${result.headline}\n\n${result.body.slice(0, 200)}...\n\nGet AI takes on anything at thoughtofview.com`
     : ''
+
+  const formatCount = (n: number) => {
+    if (n >= 1000) return `${(n / 1000).toFixed(1)}k`
+    return n.toString()
+  }
 
   return (
     <div className="min-h-screen bg-[#F0EDE6]">
@@ -164,6 +208,38 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Social Proof Bar */}
+      <div className="max-w-6xl mx-auto px-4 pb-10">
+        <div className="bg-[#0d1117] rounded-2xl px-6 py-5 flex flex-wrap items-center justify-center gap-6 md:gap-12">
+          <div className="text-center">
+            <div className="text-2xl font-bold text-white">
+              {takesCount !== null ? formatCount(takesCount) : '—'}
+            </div>
+            <div className="text-xs text-[#4dd9c0] uppercase tracking-wider mt-1">Takes Generated</div>
+          </div>
+          <div className="hidden md:block w-px h-8 bg-[#1a2a3a]" />
+          <div className="text-center">
+            <div className="text-2xl font-bold text-white">5</div>
+            <div className="text-xs text-[#4dd9c0] uppercase tracking-wider mt-1">AI Angles</div>
+          </div>
+          <div className="hidden md:block w-px h-8 bg-[#1a2a3a]" />
+          <div className="text-center">
+            <div className="text-2xl font-bold text-white">Free</div>
+            <div className="text-xs text-[#4dd9c0] uppercase tracking-wider mt-1">To Get Started</div>
+          </div>
+          <div className="hidden md:block w-px h-8 bg-[#1a2a3a]" />
+          <div className="text-center">
+            <div className="text-2xl font-bold text-white">{"< 5s"}</div>
+            <div className="text-xs text-[#4dd9c0] uppercase tracking-wider mt-1">Per Take</div>
+          </div>
+          <div className="hidden md:block w-px h-8 bg-[#1a2a3a]" />
+          <div className="text-center">
+            <div className="text-2xl font-bold text-white">∞</div>
+            <div className="text-xs text-[#4dd9c0] uppercase tracking-wider mt-1">Topics Covered</div>
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-6xl mx-auto px-4 pb-16 grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main content */}
         <div className="lg:col-span-2 space-y-10">
@@ -199,6 +275,42 @@ export default function Home() {
               ))}
             </div>
           </section>
+
+          {/* Featured Takes */}
+          {featuredTakes.length > 0 && (
+            <section>
+              <div className="flex items-center justify-between border-b-2 border-black pb-2 mb-4">
+                <h2 className="font-serif text-2xl font-bold">Top Takes</h2>
+                <Link href="/feed" className="text-xs font-bold text-brand-orange hover:underline uppercase tracking-wider">
+                  View all →
+                </Link>
+              </div>
+              <div className="space-y-4">
+                {featuredTakes.map(take => (
+                  <div key={take.id} className="bg-white border border-gray-200 rounded-xl p-5 hover:border-[#4dd9c0]/40 transition-colors">
+                    <div className="flex gap-2 mb-3 flex-wrap">
+                      <span className="text-xs bg-[#0d1117] text-[#4dd9c0] px-3 py-1 rounded-full uppercase tracking-wider font-medium">
+                        {take.topic}
+                      </span>
+                      <span className={`text-xs text-white px-3 py-1 rounded-full uppercase tracking-wider font-medium ${ANGLE_COLORS[take.angle] || 'bg-gray-500'}`}>
+                        {ANGLE_ICONS[take.angle]} {take.angle}
+                      </span>
+                    </div>
+                    <h3 className="font-serif font-bold text-lg mb-2 leading-snug">{take.headline}</h3>
+                    <p className="text-sm text-gray-500 line-clamp-2 mb-3">{take.body}</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-gray-400 flex items-center gap-1">
+                        <span>▲</span> {take.upvotes || 0} upvotes
+                      </span>
+                      <Link href="/feed" className="text-xs text-brand-orange hover:underline font-medium">
+                        Discuss →
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* OpinionBot Promo */}
           <section className="bg-[#1A1A1A] rounded-2xl p-6 md:p-8 border border-[#2a2a2a]">
@@ -310,6 +422,17 @@ export default function Home() {
                 </li>
               ))}
             </ul>
+          </div>
+
+          {/* Premium upsell */}
+          <div className="bg-[#0d1117] rounded-xl p-5 border border-[#1a2a3a]">
+            <p className="text-xs font-bold uppercase tracking-widest text-[#e85d3a] mb-2">Go Premium</p>
+            <h4 className="font-serif text-base font-bold text-white mb-2">Unlimited takes. No ads.</h4>
+            <p className="text-xs text-[#8b949e] leading-relaxed mb-4">Remove limits and get the full Thought of View experience for $5/month.</p>
+            <Link href="/premium"
+              className="block w-full bg-[#e85d3a] text-white text-xs font-bold px-4 py-2.5 rounded-lg text-center hover:bg-orange-700 transition-colors uppercase tracking-wider">
+              Upgrade — $5/mo
+            </Link>
           </div>
         </div>
       </div>
