@@ -65,6 +65,7 @@ export default function Home() {
   const [takesCount, setTakesCount] = useState<number | null>(null)
   const [featuredTakes, setFeaturedTakes] = useState<Take[]>([])
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUser(data.user))
@@ -93,6 +94,7 @@ export default function Home() {
     setLoading(true)
     setResult(null)
     setShared(false)
+    setError(null)
     try {
       const res = await fetch('/api/generate', {
         method: 'POST',
@@ -100,6 +102,10 @@ export default function Home() {
         body: JSON.stringify({ topic: t, angle, userId: user?.id }),
       })
       const data = await res.json()
+      if (!res.ok || data.error) {
+        setError(data.error || 'Something went wrong. Please try again.')
+        return
+      }
       setResult(data)
       if (user?.id) {
         setShared(true)
@@ -107,6 +113,7 @@ export default function Home() {
       }
     } catch (e) {
       console.error(e)
+      setError('Connection error. Please check your internet and try again.')
     } finally {
       setLoading(false)
     }
@@ -173,8 +180,19 @@ export default function Home() {
             ))}
           </div>
 
-          {loading && (
-            <div className="border-l-2 border-brand-orange pl-4 py-2">
+          {error && !loading && (
+            <div className="border-l-2 border-yellow-500 pl-4 py-2">
+              <p className="text-yellow-400 text-sm font-medium">⚠️ {error}</p>
+              {error.includes('overwhelmed') && (
+                <p className="text-[#888] text-xs mt-1">Groq rate limit hit — wait 30 seconds and try again.</p>
+              )}
+              {error.includes('limit reached') && (
+                <a href="/premium" className="text-brand-orange text-xs underline mt-1 block">Upgrade to Premium for unlimited takes →</a>
+              )}
+            </div>
+          )}
+
+          {loading && (            <div className="border-l-2 border-brand-orange pl-4 py-2">
               <div className="h-4 bg-[#2A2A2A] rounded animate-pulse mb-3 w-2/3" />
               <div className="h-3 bg-[#2A2A2A] rounded animate-pulse mb-2" />
               <div className="h-3 bg-[#2A2A2A] rounded animate-pulse mb-2 w-4/5" />
