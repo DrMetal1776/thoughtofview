@@ -137,10 +137,10 @@ export default function Home() {
       <div className="max-w-6xl mx-auto px-4 pt-10 pb-4">
         <p className="text-xs font-sans uppercase tracking-widest text-brand-muted mb-4">AI Opinion Engine</p>
         <h1 className="font-serif text-5xl md:text-7xl font-bold leading-tight mb-6 max-w-3xl">
-          What's the real take on anything?
+          Stop guessing. Start arguing.
         </h1>
         <p className="text-lg text-brand-muted max-w-xl mb-8">
-          Enter any topic and get an instant, sharp AI perspective — hot take, balanced analysis, devil's advocate, or contrarian view.
+          Get sharp AI perspectives on any topic — politics, tech, finance, culture. Five angles. Zero fluff.
         </p>
       </div>
 
