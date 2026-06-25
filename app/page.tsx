@@ -57,7 +57,7 @@ const AUTO_TOPICS = [
   { topic: 'Universal Basic Income', angle: 'Expert Analysis' },
 ]
 
-
+type Take = {
   id: string
   topic: string
   angle: string
