@@ -56,7 +56,7 @@ export default function TakeCard() {
     loadSample();
   }, []);
 
-  const wrapText = (ctx, text, x, y, maxWidth, lineHeight) => {
+  const wrapText = (ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, lineHeight: number): number => {
     const words = text.split(" ");
     let line = "";
     let lines = [];
