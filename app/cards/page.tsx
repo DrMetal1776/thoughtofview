@@ -75,7 +75,17 @@ export default function TakeCard() {
     return currentY;
   };
 
-  const generateCard = () => {
+  const loadImage = (src: string): Promise<HTMLImageElement> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = src;
+    });
+  };
+
+  const generateCard = async () => {
     if (!headline || generating) return;
     setGenerating(true);
 
@@ -154,23 +164,38 @@ export default function TakeCard() {
     ctx.fillStyle = "rgba(13,17,23,0.95)";
     ctx.fillRect(0, size - 120, size, 114);
 
-    // TOV circle
-    ctx.fillStyle = "#4dd9c0";
-    ctx.beginPath();
-    ctx.arc(pad + 28, size - 63, 28, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = "#0d1117";
-    ctx.font = "bold 24px Georgia, serif";
-    ctx.textAlign = "center";
-    ctx.fillText("TOV", pad + 28, size - 55);
+    // Eye logo
+    try {
+      const logo = await loadImage("/icon.png");
+      const logoSize = 72;
+      const logoX = pad - 8;
+      const logoY = size - 110;
+      // Circular clip for logo
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(logoX + logoSize / 2, logoY + logoSize / 2, logoSize / 2, 0, Math.PI * 2);
+      ctx.clip();
+      ctx.drawImage(logo, logoX, logoY, logoSize, logoSize);
+      ctx.restore();
+    } catch {
+      // Fallback to TOV circle if logo fails to load
+      ctx.fillStyle = "#4dd9c0";
+      ctx.beginPath();
+      ctx.arc(pad + 28, size - 63, 28, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#0d1117";
+      ctx.font = "bold 24px Georgia, serif";
+      ctx.textAlign = "center";
+      ctx.fillText("TOV", pad + 28, size - 55);
+    }
 
     // Brand name
     ctx.fillStyle = "#ffffff";
     ctx.font = "bold 36px Georgia, serif";
     ctx.textAlign = "left";
-    ctx.fillText("Thought", pad + 72, size - 72);
+    ctx.fillText("Thought", pad + 88, size - 72);
     ctx.fillStyle = "#4dd9c0";
-    ctx.fillText("of View", pad + 72 + 148, size - 72);
+    ctx.fillText("of View", pad + 88 + 148, size - 72);
 
     // URL
     ctx.fillStyle = "#445566";
