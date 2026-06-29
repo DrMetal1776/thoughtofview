@@ -345,6 +345,38 @@ export default function Home() {
             </div>
           </section>
 
+          {/* Take Cards Promo */}
+          <section className="bg-[#0d1117] rounded-2xl p-6 md:p-8 border border-[#1a2a3a]">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#4dd9c0]">New Feature</span>
+            </div>
+            <h2 className="font-serif text-3xl font-bold text-white leading-tight mb-3">
+              Turn takes into shareable cards 🎨
+            </h2>
+            <p className="text-[#8b949e] text-base leading-relaxed mb-6 max-w-lg">
+              Generate beautiful 1080×1080 photo cards from any take — perfect for Instagram and X. Auto-matched photos, your branding, ready to post in seconds.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+              {[
+                { icon: '📸', title: 'Auto photo', desc: 'Finds a relevant photo for your topic automatically.' },
+                { icon: '🎨', title: 'Branded design', desc: 'Every card includes Thought of View branding.' },
+                { icon: '⬇️', title: 'Download instantly', desc: 'One click to save as PNG and post anywhere.' },
+              ].map(f => (
+                <div key={f.title} className="bg-[#161b22] rounded-xl p-4 border border-[#21262d]">
+                  <div className="text-xl mb-2">{f.icon}</div>
+                  <p className="text-white font-semibold text-sm mb-1">{f.title}</p>
+                  <p className="text-[#445566] text-xs leading-relaxed">{f.desc}</p>
+                </div>
+              ))}
+            </div>
+            <Link
+              href="/cards"
+              className="inline-block bg-[#4dd9c0] text-[#0d1117] font-bold px-8 py-3 rounded-xl hover:bg-teal-400 transition-colors text-sm uppercase tracking-wider"
+            >
+              Create a Card — Free
+            </Link>
+          </section>
+
           {/* Featured Takes */}
           {featuredTakes.length > 0 && (
             <section>
@@ -414,38 +446,6 @@ export default function Home() {
               </a>
               <span className="text-[#666] text-xs">One-time purchase · No subscription required</span>
             </div>
-          </section>
-
-          {/* Take Cards Promo */}
-          <section className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#e85d3a]">New Feature</span>
-            </div>
-            <h2 className="font-serif text-3xl font-bold leading-tight mb-3">
-              Turn takes into shareable cards 🎨
-            </h2>
-            <p className="text-gray-500 text-base leading-relaxed mb-6 max-w-lg">
-              Generate beautiful 1080×1080 cards from any take — perfect for Instagram, X, and beyond. Your branding, your take, ready to post in seconds.
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-              {[
-                { icon: '📸', title: 'Instagram ready', desc: '1080×1080px — perfect square format for any platform.' },
-                { icon: '🎨', title: 'Branded design', desc: 'Every card includes Thought of View branding automatically.' },
-                { icon: '⬇️', title: 'Download instantly', desc: 'One click to save as PNG and post anywhere.' },
-              ].map(f => (
-                <div key={f.title} className="bg-gray-50 rounded-xl p-4 border border-gray-100">
-                  <div className="text-xl mb-2">{f.icon}</div>
-                  <p className="font-semibold text-sm mb-1">{f.title}</p>
-                  <p className="text-gray-400 text-xs leading-relaxed">{f.desc}</p>
-                </div>
-              ))}
-            </div>
-            <Link
-              href="/cards"
-              className="inline-block bg-[#0d1117] text-[#4dd9c0] font-bold px-8 py-3 rounded-xl hover:bg-[#1a2a3a] transition-colors text-sm uppercase tracking-wider"
-            >
-              Create a Card — Free
-            </Link>
           </section>
 
           {/* Recommended Reads */}
