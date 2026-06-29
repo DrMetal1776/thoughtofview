@@ -1,7 +1,7 @@
 'use client'
 import { useState, useRef, useEffect } from "react";
 
-const ANGLE_COLORS = {
+const ANGLE_COLORS: Record<string, { bg: string; label: string }> = {
   "Hot Take": { bg: "#e85d3a", label: "🔥 HOT TAKE" },
   "Balanced": { bg: "#3a7bd5", label: "⚖️ BALANCED" },
   "Devil's Advocate": { bg: "#7c3aed", label: "😈 DEVIL'S ADVOCATE" },
@@ -31,7 +31,7 @@ const SAMPLE_TAKES = [
 ];
 
 export default function TakeCard() {
-  const canvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [topic, setTopic] = useState("");
   const [angle, setAngle] = useState("Hot Take");
   const [headline, setHeadline] = useState("");
@@ -59,32 +59,33 @@ export default function TakeCard() {
   const wrapText = (ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, lineHeight: number): number => {
     const words = text.split(" ");
     let line = "";
-    let lines = [];
+    let currentY = y;
     for (let n = 0; n < words.length; n++) {
       const testLine = line + words[n] + " ";
       const metrics = ctx.measureText(testLine);
       if (metrics.width > maxWidth && n > 0) {
-        lines.push({ text: line, x, y });
+        ctx.fillText(line, x, currentY);
         line = words[n] + " ";
-        y += lineHeight;
+        currentY += lineHeight;
       } else {
         line = testLine;
       }
     }
-    lines.push({ text: line, x, y });
-    lines.forEach(l => ctx.fillText(l.text, l.x, l.y));
-    return y;
+    ctx.fillText(line, x, currentY);
+    return currentY;
   };
 
   const generateCard = () => {
-    if (!headline) return;
+    if (!headline || generating) return;
     setGenerating(true);
 
     const canvas = canvasRef.current;
+    if (!canvas) return;
     const size = 1080;
     canvas.width = size;
     canvas.height = size;
     const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
     const angleData = ANGLE_COLORS[angle] || ANGLE_COLORS["Hot Take"];
     const pad = 72;
@@ -153,7 +154,7 @@ export default function TakeCard() {
     ctx.fillStyle = "rgba(13,17,23,0.95)";
     ctx.fillRect(0, size - 120, size, 114);
 
-    // Eye logo placeholder (circle with teal)
+    // TOV circle
     ctx.fillStyle = "#4dd9c0";
     ctx.beginPath();
     ctx.arc(pad + 28, size - 63, 28, 0, Math.PI * 2);
@@ -190,6 +191,7 @@ export default function TakeCard() {
 
   const downloadCard = () => {
     const canvas = canvasRef.current;
+    if (!canvas) return;
     const link = document.createElement("a");
     link.download = `thoughtofview-${topic.toLowerCase().replace(/\s+/g, "-")}.png`;
     link.href = canvas.toDataURL("image/png");
@@ -203,7 +205,6 @@ export default function TakeCard() {
       background: "#0d1117",
       color: "#e6edf3",
       fontFamily: "system-ui, sans-serif",
-      padding: "0",
     }}>
       {/* Header */}
       <div style={{ borderBottom: "1px solid #1a2a3a", padding: "32px 24px 24px" }}>
