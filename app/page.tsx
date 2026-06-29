@@ -416,6 +416,38 @@ export default function Home() {
             </div>
           </section>
 
+          {/* Take Cards Promo */}
+          <section className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#e85d3a]">New Feature</span>
+            </div>
+            <h2 className="font-serif text-3xl font-bold leading-tight mb-3">
+              Turn takes into shareable cards 🎨
+            </h2>
+            <p className="text-gray-500 text-base leading-relaxed mb-6 max-w-lg">
+              Generate beautiful 1080×1080 cards from any take — perfect for Instagram, X, and beyond. Your branding, your take, ready to post in seconds.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+              {[
+                { icon: '📸', title: 'Instagram ready', desc: '1080×1080px — perfect square format for any platform.' },
+                { icon: '🎨', title: 'Branded design', desc: 'Every card includes Thought of View branding automatically.' },
+                { icon: '⬇️', title: 'Download instantly', desc: 'One click to save as PNG and post anywhere.' },
+              ].map(f => (
+                <div key={f.title} className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                  <div className="text-xl mb-2">{f.icon}</div>
+                  <p className="font-semibold text-sm mb-1">{f.title}</p>
+                  <p className="text-gray-400 text-xs leading-relaxed">{f.desc}</p>
+                </div>
+              ))}
+            </div>
+            <Link
+              href="/cards"
+              className="inline-block bg-[#0d1117] text-[#4dd9c0] font-bold px-8 py-3 rounded-xl hover:bg-[#1a2a3a] transition-colors text-sm uppercase tracking-wider"
+            >
+              Create a Card — Free
+            </Link>
+          </section>
+
           {/* Recommended Reads */}
           <section>
             <h2 className="font-serif text-2xl font-bold border-b-2 border-black pb-2 mb-1">Recommended Reads</h2>
@@ -538,6 +570,7 @@ export default function Home() {
         <div className="flex justify-center gap-6 text-xs text-gray-500 mb-4 flex-wrap">
           <a href="/about" className="hover:text-black">About</a>
           <a href="/faq" className="hover:text-black">FAQ</a>
+          <a href="/cards" className="hover:text-black">Cards</a>
           <a href="/privacy" className="hover:text-black">Privacy Policy</a>
           <a href="/terms" className="hover:text-black">Terms of Use</a>
           <a href="/contact" className="hover:text-black">Contact</a>
