@@ -40,6 +40,8 @@ export default function TakeCard() {
   const [cardReady, setCardReady] = useState(false);
   const [sampleIndex, setSampleIndex] = useState(0);
   const [downloaded, setDownloaded] = useState(false);
+  const [photoCredit, setPhotoCredit] = useState<{ name: string; link: string } | null>(null);
+  const [bgStyle, setBgStyle] = useState<'photo' | 'dark'>('photo');
 
   const loadSample = () => {
     const s = SAMPLE_TAKES[sampleIndex % SAMPLE_TAKES.length];
@@ -50,6 +52,7 @@ export default function TakeCard() {
     setSampleIndex(i => i + 1);
     setCardReady(false);
     setDownloaded(false);
+    setPhotoCredit(null);
   };
 
   useEffect(() => {
@@ -88,28 +91,65 @@ export default function TakeCard() {
   const generateCard = async () => {
     if (!headline || generating) return;
     setGenerating(true);
+    setPhotoCredit(null);
 
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas) { setGenerating(false); return; }
     const size = 1080;
     canvas.width = size;
     canvas.height = size;
     const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    if (!ctx) { setGenerating(false); return; }
 
     const angleData = ANGLE_COLORS[angle] || ANGLE_COLORS["Hot Take"];
     const pad = 72;
 
-    // Background
-    ctx.fillStyle = "#0d1117";
-    ctx.fillRect(0, 0, size, size);
+    // --- BACKGROUND ---
+    let photoLoaded = false;
 
-    // Subtle grid
-    ctx.strokeStyle = "rgba(255,255,255,0.04)";
-    ctx.lineWidth = 1;
-    for (let i = 0; i < size; i += 48) {
-      ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, size); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(size, i); ctx.stroke();
+    if (bgStyle === 'photo' && topic) {
+      try {
+        const photoRes = await fetch(`/api/photo?query=${encodeURIComponent(topic)}`)
+        const photoData = await photoRes.json()
+
+        if (photoData.url) {
+          const photo = await loadImage(photoData.url)
+          // Draw photo scaled to fill canvas
+          const scale = Math.max(size / photo.width, size / photo.height)
+          const w = photo.width * scale
+          const h = photo.height * scale
+          const x = (size - w) / 2
+          const y = (size - h) / 2
+          ctx.drawImage(photo, x, y, w, h)
+
+          // Dark overlay for readability
+          const gradient = ctx.createLinearGradient(0, 0, 0, size)
+          gradient.addColorStop(0, 'rgba(0,0,0,0.55)')
+          gradient.addColorStop(0.5, 'rgba(0,0,0,0.45)')
+          gradient.addColorStop(1, 'rgba(0,0,0,0.85)')
+          ctx.fillStyle = gradient
+          ctx.fillRect(0, 0, size, size)
+
+          photoLoaded = true
+          if (photoData.credit) {
+            setPhotoCredit({ name: photoData.credit, link: photoData.creditLink })
+          }
+        }
+      } catch (e) {
+        console.error('Photo load failed:', e)
+      }
+    }
+
+    if (!photoLoaded) {
+      // Dark grid fallback
+      ctx.fillStyle = "#0d1117";
+      ctx.fillRect(0, 0, size, size);
+      ctx.strokeStyle = "rgba(255,255,255,0.04)";
+      ctx.lineWidth = 1;
+      for (let i = 0; i < size; i += 48) {
+        ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, size); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(size, i); ctx.stroke();
+      }
     }
 
     // Top accent bar
@@ -132,7 +172,7 @@ export default function TakeCard() {
     ctx.fillText(angleData.label, pad + 20, badgeY + 34);
 
     // Topic pill
-    ctx.fillStyle = "rgba(77,217,192,0.15)";
+    ctx.fillStyle = "rgba(77,217,192,0.2)";
     ctx.beginPath();
     ctx.roundRect(pad + 336, badgeY, 200, 52, 26);
     ctx.fill();
@@ -144,7 +184,11 @@ export default function TakeCard() {
     ctx.fillStyle = "#ffffff";
     ctx.font = `bold 58px Georgia, serif`;
     ctx.textAlign = "left";
+    // Text shadow for readability over photos
+    ctx.shadowColor = 'rgba(0,0,0,0.8)';
+    ctx.shadowBlur = 12;
     const headlineY = wrapText(ctx, headline, pad, badgeY + 120, size - pad * 2, 72);
+    ctx.shadowBlur = 0;
 
     // Divider
     const dividerY = headlineY + 48;
@@ -152,16 +196,19 @@ export default function TakeCard() {
     ctx.fillRect(pad, dividerY, 80, 3);
 
     // Body text
-    ctx.fillStyle = "#8b949e";
+    ctx.fillStyle = "rgba(255,255,255,0.85)";
     ctx.font = "32px Georgia, serif";
+    ctx.shadowColor = 'rgba(0,0,0,0.8)';
+    ctx.shadowBlur = 8;
     const bodyMaxY = size - 180;
     const bodyAvailableHeight = bodyMaxY - (dividerY + 48);
     const bodyLines = Math.floor(bodyAvailableHeight / 48);
     const truncatedBody = body.length > bodyLines * 40 ? body.slice(0, bodyLines * 40) + "..." : body;
     wrapText(ctx, truncatedBody, pad, dividerY + 56, size - pad * 2, 48);
+    ctx.shadowBlur = 0;
 
     // Bottom branding bar
-    ctx.fillStyle = "rgba(13,17,23,0.95)";
+    ctx.fillStyle = "rgba(0,0,0,0.75)";
     ctx.fillRect(0, size - 120, size, 114);
 
     // Eye logo
@@ -170,7 +217,6 @@ export default function TakeCard() {
       const logoSize = 72;
       const logoX = pad - 8;
       const logoY = size - 110;
-      // Circular clip for logo
       ctx.save();
       ctx.beginPath();
       ctx.arc(logoX + logoSize / 2, logoY + logoSize / 2, logoSize / 2, 0, Math.PI * 2);
@@ -178,7 +224,6 @@ export default function TakeCard() {
       ctx.drawImage(logo, logoX, logoY, logoSize, logoSize);
       ctx.restore();
     } catch {
-      // Fallback to TOV circle if logo fails to load
       ctx.fillStyle = "#4dd9c0";
       ctx.beginPath();
       ctx.arc(pad + 28, size - 63, 28, 0, Math.PI * 2);
@@ -198,13 +243,13 @@ export default function TakeCard() {
     ctx.fillText("of View", pad + 88 + 148, size - 72);
 
     // URL
-    ctx.fillStyle = "#445566";
+    ctx.fillStyle = "#8b949e";
     ctx.font = "24px system-ui, sans-serif";
     ctx.textAlign = "right";
     ctx.fillText("thoughtofview.com", size - pad, size - 55);
 
     // Tagline
-    ctx.fillStyle = "#445566";
+    ctx.fillStyle = "#8b949e";
     ctx.font = "italic 22px Georgia, serif";
     ctx.textAlign = "right";
     ctx.fillText("Got a thought? Get a view.", size - pad, size - 80);
@@ -225,12 +270,7 @@ export default function TakeCard() {
   };
 
   return (
-    <div style={{
-      minHeight: "100vh",
-      background: "#0d1117",
-      color: "#e6edf3",
-      fontFamily: "system-ui, sans-serif",
-    }}>
+    <div style={{ minHeight: "100vh", background: "#0d1117", color: "#e6edf3", fontFamily: "system-ui, sans-serif" }}>
       {/* Header */}
       <div style={{ borderBottom: "1px solid #1a2a3a", padding: "32px 24px 24px" }}>
         <div style={{ maxWidth: 960, margin: "0 auto" }}>
@@ -241,7 +281,7 @@ export default function TakeCard() {
             Take Card Generator
           </h1>
           <p style={{ color: "#8b949e", fontSize: 16, margin: 0 }}>
-            Create shareable 1080×1080 cards for Instagram, X, and beyond.
+            Create shareable 1080×1080 cards with dynamic photo backgrounds — perfect for Instagram and X.
           </p>
         </div>
       </div>
@@ -258,11 +298,44 @@ export default function TakeCard() {
               value={topic}
               onChange={e => { setTopic(e.target.value); setCardReady(false); }}
               placeholder="e.g. Remote Work, Bitcoin, AI..."
-              style={{
-                width: "100%", padding: "12px 16px", background: "#161b22", border: "1px solid #21262d",
-                borderRadius: 10, color: "#ffffff", fontSize: 15, outline: "none", boxSizing: "border-box",
-              }}
+              style={{ width: "100%", padding: "12px 16px", background: "#161b22", border: "1px solid #21262d", borderRadius: 10, color: "#ffffff", fontSize: 15, outline: "none", boxSizing: "border-box" }}
             />
+          </div>
+
+          {/* Background style toggle */}
+          <div style={{ marginBottom: 24 }}>
+            <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#4dd9c0", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>
+              Background
+            </label>
+            <div style={{ display: "flex", gap: 8 }}>
+              <button
+                onClick={() => { setBgStyle('photo'); setCardReady(false); }}
+                style={{
+                  padding: "10px 20px", borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: "pointer",
+                  background: bgStyle === 'photo' ? "#4dd9c0" : "#161b22",
+                  color: bgStyle === 'photo' ? "#0d1117" : "#8b949e",
+                  border: `1px solid ${bgStyle === 'photo' ? "#4dd9c0" : "#21262d"}`,
+                }}
+              >
+                📸 Auto Photo
+              </button>
+              <button
+                onClick={() => { setBgStyle('dark'); setCardReady(false); }}
+                style={{
+                  padding: "10px 20px", borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: "pointer",
+                  background: bgStyle === 'dark' ? "#4dd9c0" : "#161b22",
+                  color: bgStyle === 'dark' ? "#0d1117" : "#8b949e",
+                  border: `1px solid ${bgStyle === 'dark' ? "#4dd9c0" : "#21262d"}`,
+                }}
+              >
+                🌑 Dark Grid
+              </button>
+            </div>
+            {bgStyle === 'photo' && (
+              <p style={{ fontSize: 12, color: "#445566", marginTop: 8 }}>
+                Automatically finds a photo matching your topic from Unsplash.
+              </p>
+            )}
           </div>
 
           <div style={{ marginBottom: 24 }}>
@@ -279,7 +352,6 @@ export default function TakeCard() {
                     background: angle === a ? ANGLE_COLORS[a].bg : "#161b22",
                     color: angle === a ? "#fff" : "#8b949e",
                     border: `1px solid ${angle === a ? ANGLE_COLORS[a].bg : "#21262d"}`,
-                    transition: "all 0.15s",
                   }}
                 >
                   {ANGLE_COLORS[a].label}
@@ -297,11 +369,7 @@ export default function TakeCard() {
               onChange={e => { setHeadline(e.target.value); setCardReady(false); }}
               placeholder="Your punchy headline..."
               rows={3}
-              style={{
-                width: "100%", padding: "12px 16px", background: "#161b22", border: "1px solid #21262d",
-                borderRadius: 10, color: "#ffffff", fontSize: 15, outline: "none", resize: "vertical",
-                boxSizing: "border-box", fontFamily: "Georgia, serif",
-              }}
+              style={{ width: "100%", padding: "12px 16px", background: "#161b22", border: "1px solid #21262d", borderRadius: 10, color: "#ffffff", fontSize: 15, outline: "none", resize: "vertical", boxSizing: "border-box", fontFamily: "Georgia, serif" }}
             />
           </div>
 
@@ -314,11 +382,7 @@ export default function TakeCard() {
               onChange={e => { setBody(e.target.value); setCardReady(false); }}
               placeholder="The supporting argument..."
               rows={4}
-              style={{
-                width: "100%", padding: "12px 16px", background: "#161b22", border: "1px solid #21262d",
-                borderRadius: 10, color: "#ffffff", fontSize: 15, outline: "none", resize: "vertical",
-                boxSizing: "border-box", fontFamily: "Georgia, serif",
-              }}
+              style={{ width: "100%", padding: "12px 16px", background: "#161b22", border: "1px solid #21262d", borderRadius: 10, color: "#ffffff", fontSize: 15, outline: "none", resize: "vertical", boxSizing: "border-box", fontFamily: "Georgia, serif" }}
             />
           </div>
 
@@ -332,7 +396,7 @@ export default function TakeCard() {
                 opacity: headline ? 1 : 0.5, textTransform: "uppercase", letterSpacing: "0.08em",
               }}
             >
-              {generating ? "Generating..." : "Generate Card"}
+              {generating ? "Finding photo..." : "Generate Card"}
             </button>
 
             {cardReady && (
@@ -350,21 +414,28 @@ export default function TakeCard() {
 
             <button
               onClick={loadSample}
-              style={{
-                padding: "14px 20px", background: "transparent", color: "#8b949e",
-                fontWeight: 600, fontSize: 14, border: "1px solid #21262d",
-                borderRadius: 10, cursor: "pointer",
-              }}
+              style={{ padding: "14px 20px", background: "transparent", color: "#8b949e", fontWeight: 600, fontSize: 14, border: "1px solid #21262d", borderRadius: 10, cursor: "pointer" }}
             >
               Try example →
             </button>
           </div>
 
+          {photoCredit && (
+            <p style={{ fontSize: 12, color: "#445566", marginTop: 12 }}>
+              Photo by{" "}
+              <a href={`${photoCredit.link}?utm_source=thoughtofview&utm_medium=referral`} target="_blank" rel="noopener noreferrer" style={{ color: "#4dd9c0" }}>
+                {photoCredit.name}
+              </a>{" "}
+              on{" "}
+              <a href="https://unsplash.com?utm_source=thoughtofview&utm_medium=referral" target="_blank" rel="noopener noreferrer" style={{ color: "#4dd9c0" }}>
+                Unsplash
+              </a>
+            </p>
+          )}
+
           {cardReady && (
-            <div style={{ marginTop: 20, padding: "16px", background: "#161b22", borderRadius: 10, border: "1px solid #1a2a3a" }}>
-              <p style={{ fontSize: 13, color: "#4dd9c0", fontWeight: 700, margin: "0 0 6px", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                ✦ Instagram tips
-              </p>
+            <div style={{ marginTop: 16, padding: "16px", background: "#161b22", borderRadius: 10, border: "1px solid #1a2a3a" }}>
+              <p style={{ fontSize: 13, color: "#4dd9c0", fontWeight: 700, margin: "0 0 6px", textTransform: "uppercase", letterSpacing: "0.08em" }}>✦ Instagram tips</p>
               <p style={{ fontSize: 13, color: "#8b949e", margin: "0 0 4px" }}>• Post at 9am, 12pm, or 6pm for best reach</p>
               <p style={{ fontSize: 13, color: "#8b949e", margin: "0 0 4px" }}>• Add hashtags: #HotTakes #AI #ThoughtOfView</p>
               <p style={{ fontSize: 13, color: "#8b949e", margin: 0 }}>• Tag @thoughtofview in the caption</p>
@@ -378,15 +449,9 @@ export default function TakeCard() {
             Preview (1080×1080)
           </p>
           <div style={{ position: "relative", borderRadius: 12, overflow: "hidden", border: "1px solid #21262d" }}>
-            <canvas
-              ref={canvasRef}
-              style={{ width: "100%", height: "auto", display: "block" }}
-            />
+            <canvas ref={canvasRef} style={{ width: "100%", height: "auto", display: "block" }} />
             {!cardReady && (
-              <div style={{
-                position: "absolute", inset: 0, background: "#0d1117",
-                display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 12,
-              }}>
+              <div style={{ position: "absolute", inset: 0, background: "#0d1117", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 12 }}>
                 <div style={{ fontSize: 48 }}>🎨</div>
                 <p style={{ color: "#445566", fontSize: 15, textAlign: "center", margin: 0 }}>
                   Fill in the details and click<br />"Generate Card" to preview
