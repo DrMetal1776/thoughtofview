@@ -238,9 +238,10 @@ export default function TakeCard() {
     ctx.fillStyle = "#ffffff";
     ctx.font = "bold 36px Georgia, serif";
     ctx.textAlign = "left";
-    ctx.fillText("Thought", pad + 88, size - 72);
+    ctx.fillText("Thought ", pad + 92, size - 72);
     ctx.fillStyle = "#4dd9c0";
-    ctx.fillText("of View", pad + 88 + 148, size - 72);
+    const thoughtWidth = ctx.measureText("Thought ").width;
+    ctx.fillText("of View", pad + 92 + thoughtWidth, size - 72);
 
     // URL
     ctx.fillStyle = "#8b949e";
