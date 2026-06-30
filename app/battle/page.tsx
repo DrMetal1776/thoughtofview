@@ -24,15 +24,7 @@ export default function TakeBattle() {
   const [showWinner, setShowWinner] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [battleStarted, setBattleStarted] = useState(false);
-  const [bgImage, setBgImage] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    fetch('/api/photo?query=' + encodeURIComponent('dark coliseum arena stadium spotlight'))
-      .then(res => res.json())
-      .then(data => { if (data.url) setBgImage(data.url); })
-      .catch(() => {});
-  }, []);
 
   const startBattle = async () => {
     if (!topic.trim() || angleA === angleB) return;
@@ -114,14 +106,12 @@ export default function TakeBattle() {
       background: "#0a0d12",
     }}>
       {/* Arena background photo */}
-      {bgImage && (
-        <div style={{
-          position: "fixed", inset: 0, zIndex: 0,
-          backgroundImage: `url(${bgImage})`,
-          backgroundSize: "cover", backgroundPosition: "center",
-          opacity: 0.35, filter: "blur(1px)",
-        }} />
-      )}
+      <div style={{
+        position: "fixed", inset: 0, zIndex: 0,
+        backgroundImage: `url('/arena-bg.png')`,
+        backgroundSize: "cover", backgroundPosition: "center",
+        opacity: 0.45, filter: "blur(1px)",
+      }} />
 
       {/* Dark overlay for readability */}
       <div style={{
