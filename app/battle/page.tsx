@@ -110,17 +110,13 @@ export default function TakeBattle() {
         position: "fixed", inset: 0, zIndex: 0,
         backgroundImage: `url('/arena-bg.png')`,
         backgroundSize: "cover", backgroundPosition: "center",
-        opacity: 0.65,
+        opacity: 0.85,
       }} />
 
       {/* Dark overlay for readability */}
       <div style={{
         position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
-        background: `
-          radial-gradient(ellipse 1000px 700px at 15% -10%, rgba(232,93,58,0.15), transparent 55%),
-          radial-gradient(ellipse 1000px 700px at 85% -10%, rgba(124,58,237,0.15), transparent 55%),
-          linear-gradient(180deg, rgba(10,13,18,0.5) 0%, rgba(10,13,18,0.65) 40%, rgba(10,13,18,0.82) 100%)
-        `,
+        background: `linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.65) 100%)`,
       }} />
 
       {/* Content layer */}
