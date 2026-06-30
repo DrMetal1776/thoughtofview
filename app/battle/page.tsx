@@ -99,10 +99,39 @@ export default function TakeBattle() {
   const angleBData = ANGLE_COLORS[angleB];
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0d1117", color: "#e6edf3", fontFamily: "system-ui, sans-serif" }}>
+    <div style={{
+      minHeight: "100vh",
+      background: `
+        radial-gradient(ellipse 800px 500px at 50% 0%, rgba(232,93,58,0.12), transparent 60%),
+        radial-gradient(ellipse 800px 500px at 50% 100%, rgba(124,58,237,0.12), transparent 60%),
+        #0d1117
+      `,
+      color: "#e6edf3", fontFamily: "system-ui, sans-serif",
+      position: "relative", overflow: "hidden",
+    }}>
+      {/* Arena floor lines */}
+      <div style={{
+        position: "absolute", inset: 0, pointerEvents: "none", opacity: 0.5,
+        backgroundImage: `
+          repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(77,217,192,0.03) 79px, rgba(77,217,192,0.03) 80px),
+          repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(77,217,192,0.03) 79px, rgba(77,217,192,0.03) 80px)
+        `,
+      }} />
+
+      {/* Spotlight beams */}
+      <div style={{
+        position: "absolute", top: -100, left: "20%", width: 300, height: 600,
+        background: "linear-gradient(180deg, rgba(232,93,58,0.08), transparent)",
+        transform: "rotate(15deg)", pointerEvents: "none", filter: "blur(40px)",
+      }} />
+      <div style={{
+        position: "absolute", top: -100, right: "20%", width: 300, height: 600,
+        background: "linear-gradient(180deg, rgba(124,58,237,0.08), transparent)",
+        transform: "rotate(-15deg)", pointerEvents: "none", filter: "blur(40px)",
+      }} />
 
       {/* Header */}
-      <div style={{ borderBottom: "1px solid #1a2a3a", padding: "32px 24px 24px" }}>
+      <div style={{ borderBottom: "1px solid #1a2a3a", padding: "32px 24px 24px", position: "relative" }}>
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
           <p style={{ color: "#e85d3a", fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>
             ⚔️ New — Live AI Debate
@@ -116,7 +145,7 @@ export default function TakeBattle() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 24px" }}>
+      <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 24px", position: "relative" }}>
 
         {!battleStarted && (
           <div>
@@ -159,7 +188,14 @@ export default function TakeBattle() {
                 </div>
               </div>
 
-              <div style={{ fontSize: 28, fontWeight: 900, color: "#445566" }}>VS</div>
+              <div style={{ textAlign: "center", position: "relative" }}>
+                <div style={{
+                  fontSize: 32, fontWeight: 900, color: "#fff",
+                  textShadow: "0 0 20px rgba(232,93,58,0.6), 0 0 40px rgba(124,58,237,0.4)",
+                  animation: "pulseVs 2s ease-in-out infinite",
+                }}>⚔️</div>
+                <div style={{ fontSize: 18, fontWeight: 900, color: "#445566", marginTop: 4 }}>VS</div>
+              </div>
 
               <div>
                 <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#7c3aed", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>
@@ -203,15 +239,20 @@ export default function TakeBattle() {
         {battleStarted && (
           <div>
             {/* Battle header */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginBottom: 24, padding: "16px", background: "#161b22", borderRadius: 12, border: "1px solid #21262d" }}>
+            <div style={{
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginBottom: 24,
+              padding: "20px", borderRadius: 12, position: "relative", overflow: "hidden",
+              background: "linear-gradient(90deg, rgba(232,93,58,0.1), rgba(13,17,23,0.9) 50%, rgba(124,58,237,0.1))",
+              border: "1px solid #21262d",
+            }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: 20 }}>{angleAData.emoji}</span>
-                <span style={{ fontWeight: 700, color: angleAData.bg, fontSize: 14 }}>{angleA}</span>
+                <span style={{ fontSize: 22 }}>{angleAData.emoji}</span>
+                <span style={{ fontWeight: 800, color: angleAData.bg, fontSize: 15, textShadow: `0 0 12px ${angleAData.bg}88` }}>{angleA}</span>
               </div>
-              <span style={{ fontSize: 16, fontWeight: 900, color: "#445566" }}>VS</span>
+              <span style={{ fontSize: 18, fontWeight: 900, color: "#fff", animation: "pulseVs 2s ease-in-out infinite" }}>⚔️</span>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontWeight: 700, color: angleBData.bg, fontSize: 14 }}>{angleB}</span>
-                <span style={{ fontSize: 20 }}>{angleBData.emoji}</span>
+                <span style={{ fontWeight: 800, color: angleBData.bg, fontSize: 15, textShadow: `0 0 12px ${angleBData.bg}88` }}>{angleB}</span>
+                <span style={{ fontSize: 22 }}>{angleBData.emoji}</span>
               </div>
             </div>
             <p style={{ textAlign: "center", color: "#4dd9c0", fontSize: 13, marginBottom: 24, fontWeight: 600 }}>
@@ -305,6 +346,10 @@ export default function TakeBattle() {
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(8px); }
           to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulseVs {
+          0%, 100% { transform: scale(1); opacity: 0.8; }
+          50% { transform: scale(1.15); opacity: 1; }
         }
       `}</style>
     </div>
