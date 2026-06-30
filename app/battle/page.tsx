@@ -24,7 +24,15 @@ export default function TakeBattle() {
   const [showWinner, setShowWinner] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [battleStarted, setBattleStarted] = useState(false);
+  const [bgImage, setBgImage] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetch('/api/photo?query=' + encodeURIComponent('dark coliseum arena stadium spotlight'))
+      .then(res => res.json())
+      .then(data => { if (data.url) setBgImage(data.url); })
+      .catch(() => {});
+  }, []);
 
   const startBattle = async () => {
     if (!topic.trim() || angleA === angleB) return;
@@ -101,33 +109,61 @@ export default function TakeBattle() {
   return (
     <div style={{
       minHeight: "100vh",
-      background: `
-        radial-gradient(ellipse 800px 500px at 50% 0%, rgba(232,93,58,0.12), transparent 60%),
-        radial-gradient(ellipse 800px 500px at 50% 100%, rgba(124,58,237,0.12), transparent 60%),
-        #0d1117
-      `,
       color: "#e6edf3", fontFamily: "system-ui, sans-serif",
       position: "relative", overflow: "hidden",
+      background: "#0a0d12",
     }}>
-      {/* Arena floor lines */}
+      {/* Arena background photo */}
+      {bgImage && (
+        <div style={{
+          position: "fixed", inset: 0, zIndex: 0,
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: "cover", backgroundPosition: "center",
+          opacity: 0.35, filter: "blur(1px)",
+        }} />
+      )}
+
+      {/* Dark overlay for readability */}
       <div style={{
-        position: "absolute", inset: 0, pointerEvents: "none", opacity: 0.5,
-        backgroundImage: `
-          repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(77,217,192,0.03) 79px, rgba(77,217,192,0.03) 80px),
-          repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(77,217,192,0.03) 79px, rgba(77,217,192,0.03) 80px)
+        position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
+        background: `
+          radial-gradient(ellipse 1000px 700px at 15% -10%, rgba(232,93,58,0.2), transparent 55%),
+          radial-gradient(ellipse 1000px 700px at 85% -10%, rgba(124,58,237,0.2), transparent 55%),
+          linear-gradient(180deg, rgba(10,13,18,0.75) 0%, rgba(10,13,18,0.92) 40%, rgba(10,13,18,0.97) 100%)
         `,
       }} />
 
-      {/* Spotlight beams */}
+      {/* Content layer */}
+      <div style={{ position: "relative", zIndex: 1 }}>
+
+      {/* Arena floor lines — concentric rings like a coliseum */}
       <div style={{
-        position: "absolute", top: -100, left: "20%", width: 300, height: 600,
-        background: "linear-gradient(180deg, rgba(232,93,58,0.08), transparent)",
-        transform: "rotate(15deg)", pointerEvents: "none", filter: "blur(40px)",
+        position: "absolute", left: "50%", top: "45%", transform: "translate(-50%, -50%)",
+        width: 1400, height: 1400, borderRadius: "50%",
+        border: "1px solid rgba(77,217,192,0.06)", pointerEvents: "none",
       }} />
       <div style={{
-        position: "absolute", top: -100, right: "20%", width: 300, height: 600,
-        background: "linear-gradient(180deg, rgba(124,58,237,0.08), transparent)",
-        transform: "rotate(-15deg)", pointerEvents: "none", filter: "blur(40px)",
+        position: "absolute", left: "50%", top: "45%", transform: "translate(-50%, -50%)",
+        width: 1000, height: 1000, borderRadius: "50%",
+        border: "1px solid rgba(77,217,192,0.08)", pointerEvents: "none",
+      }} />
+      <div style={{
+        position: "absolute", left: "50%", top: "45%", transform: "translate(-50%, -50%)",
+        width: 650, height: 650, borderRadius: "50%",
+        border: "1px solid rgba(77,217,192,0.1)", pointerEvents: "none",
+      }} />
+
+      {/* Torch glows — left (orange) */}
+      <div style={{
+        position: "absolute", top: "10%", left: "8%", width: 220, height: 220,
+        background: "radial-gradient(circle, rgba(232,93,58,0.35), transparent 70%)",
+        filter: "blur(30px)", pointerEvents: "none", animation: "flicker 3s ease-in-out infinite",
+      }} />
+      {/* Torch glows — right (purple) */}
+      <div style={{
+        position: "absolute", top: "10%", right: "8%", width: 220, height: 220,
+        background: "radial-gradient(circle, rgba(124,58,237,0.35), transparent 70%)",
+        filter: "blur(30px)", pointerEvents: "none", animation: "flicker 3s ease-in-out infinite 1.5s",
       }} />
 
       {/* Header */}
@@ -351,7 +387,14 @@ export default function TakeBattle() {
           0%, 100% { transform: scale(1); opacity: 0.8; }
           50% { transform: scale(1.15); opacity: 1; }
         }
+        @keyframes flicker {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          25% { opacity: 0.7; transform: scale(0.95); }
+          50% { opacity: 1; transform: scale(1.05); }
+          75% { opacity: 0.85; transform: scale(0.98); }
+        }
       `}</style>
+      </div>
     </div>
   );
 }
