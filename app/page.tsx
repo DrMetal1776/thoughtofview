@@ -431,7 +431,7 @@ export default function Home() {
 
               {/* Right: rotating card preview */}
               <div className="hidden md:flex items-center justify-center p-6 bg-[#080d12]">
-                <div style={{ width: '100%', maxWidth: 220, aspectRatio: '1/1', borderRadius: 12, overflow: 'hidden', border: '1px solid #21262d', position: 'relative', boxShadow: '0 0 40px rgba(77,217,192,0.1)' }}>
+                <div style={{ width: '100%', maxWidth: 300, aspectRatio: '1/1', borderRadius: 16, overflow: 'hidden', border: '1px solid #21262d', position: 'relative', boxShadow: '0 0 60px rgba(77,217,192,0.15)' }}>
                   {CARD_EXAMPLES.map((card, i) => (
                     <div key={i} style={{ position: 'absolute', inset: 0, opacity: cardIndex === i ? 1 : 0, transition: 'opacity 0.8s ease' }}>
                       <div style={{ position: 'absolute', inset: 0, backgroundImage: `url(${card.photo})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
@@ -439,16 +439,16 @@ export default function Home() {
                       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: '#4dd9c0' }} />
                       <div style={{ position: 'absolute', inset: 0, padding: '14px 14px 40px' }}>
                         <div style={{ display: 'flex', gap: 6, marginBottom: 8, flexWrap: 'wrap' as const }}>
-                          <span style={{ background: card.angleColor, color: '#fff', fontSize: 8, fontWeight: 700, padding: '3px 8px', borderRadius: 10, textTransform: 'uppercase' as const }}>{card.angleEmoji} {card.angle}</span>
-                          <span style={{ background: 'rgba(77,217,192,0.2)', color: '#4dd9c0', fontSize: 8, fontWeight: 700, padding: '3px 8px', borderRadius: 10, textTransform: 'uppercase' as const }}>{card.topic}</span>
+                          <span style={{ background: card.angleColor, color: '#fff', fontSize: 10, fontWeight: 700, padding: '4px 10px', borderRadius: 10, textTransform: 'uppercase' as const }}>{card.angleEmoji} {card.angle}</span>
+                          <span style={{ background: 'rgba(77,217,192,0.2)', color: '#4dd9c0', fontSize: 10, fontWeight: 700, padding: '4px 10px', borderRadius: 10, textTransform: 'uppercase' as const }}>{card.topic}</span>
                         </div>
-                        <p style={{ color: '#ffffff', fontSize: 10, fontWeight: 700, lineHeight: 1.4, marginBottom: 6, fontFamily: 'Georgia, serif', textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>{card.headline}</p>
-                        <div style={{ height: 2, width: 24, background: '#4dd9c0', marginBottom: 6 }} />
-                        <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 8, lineHeight: 1.6, textShadow: '0 1px 3px rgba(0,0,0,0.8)' }}>{card.body.slice(0, 110)}...</p>
+                        <p style={{ color: '#ffffff', fontSize: 13, fontWeight: 700, lineHeight: 1.4, marginBottom: 8, fontFamily: 'Georgia, serif', textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>{card.headline}</p>
+                        <div style={{ height: 2, width: 28, background: '#4dd9c0', marginBottom: 8 }} />
+                        <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 10, lineHeight: 1.6, textShadow: '0 1px 3px rgba(0,0,0,0.8)' }}>{card.body.slice(0, 130)}...</p>
                       </div>
-                      <div style={{ position: 'absolute', bottom: 10, left: 0, right: 0, background: 'rgba(0,0,0,0.8)', padding: '6px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span style={{ color: '#ffffff', fontSize: 8, fontWeight: 700, fontFamily: 'Georgia, serif' }}>Thought <span style={{ color: '#4dd9c0' }}>of View</span></span>
-                        <span style={{ color: '#445566', fontSize: 7 }}>thoughtofview.com</span>
+                      <div style={{ position: 'absolute', bottom: 10, left: 0, right: 0, background: 'rgba(0,0,0,0.8)', padding: '8px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ color: '#ffffff', fontSize: 11, fontWeight: 700, fontFamily: 'Georgia, serif' }}>Thought <span style={{ color: '#4dd9c0' }}>of View</span></span>
+                        <span style={{ color: '#445566', fontSize: 9 }}>thoughtofview.com</span>
                       </div>
                       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 2, background: '#4dd9c0' }} />
                     </div>
