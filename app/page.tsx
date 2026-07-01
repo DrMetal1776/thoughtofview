@@ -466,43 +466,81 @@ export default function Home() {
 
           {/* Take Battle Promo */}
           <section className="rounded-2xl overflow-hidden border border-[#1a2a3a] relative">
-            {/* Arena background */}
-            <div style={{
-              position: 'absolute', inset: 0,
-              backgroundImage: "url('/arena-bg.png')",
-              backgroundSize: 'cover', backgroundPosition: 'center',
-              opacity: 0.4,
-            }} />
+            <div style={{ position: 'absolute', inset: 0, backgroundImage: "url('/arena-bg.png')", backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.4 }} />
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.75) 100%)' }} />
-            <div className="relative z-10 p-6 md:p-8">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-xs font-bold uppercase tracking-widest text-[#e85d3a]">⚔️ Live AI Debate</span>
+            <div className="relative z-10 grid grid-cols-1 md:grid-cols-2">
+              {/* Left: content */}
+              <div className="p-6 md:p-8">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-xs font-bold uppercase tracking-widest text-[#e85d3a]">⚔️ Live AI Debate</span>
+                </div>
+                <h2 className="font-serif text-3xl font-bold text-white leading-tight mb-3">
+                  Take Battle
+                </h2>
+                <p className="text-[#ccc] text-base leading-relaxed mb-6">
+                  Watch two AI perspectives go head-to-head on any topic. Pick your fighters, start the battle, and see who wins. Winner takes all.
+                </p>
+                <div className="grid grid-cols-1 gap-3 mb-8">
+                  {[
+                    { icon: '⚔️', title: 'Live debate', desc: '4 rounds of AI arguing back and forth in real time.' },
+                    { icon: '🏆', title: 'AI judge', desc: 'An AI judge declares the winner after the final round.' },
+                    { icon: '🎯', title: 'Any topic', desc: 'Politics, tech, finance, culture — anything goes.' },
+                  ].map(f => (
+                    <div key={f.title} className="flex items-start gap-3 bg-black/40 rounded-xl p-3 border border-white/10">
+                      <span className="text-lg mt-0.5">{f.icon}</span>
+                      <div>
+                        <p className="text-white font-semibold text-sm">{f.title}</p>
+                        <p className="text-[#aaa] text-xs leading-relaxed">{f.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <Link href="/battle" className="inline-block bg-[#e85d3a] text-white font-bold px-8 py-3 rounded-xl hover:bg-orange-700 transition-colors text-sm uppercase tracking-wider">
+                  ⚔️ Start a Battle — Free
+                </Link>
               </div>
-              <h2 className="font-serif text-3xl font-bold text-white leading-tight mb-3">
-                Take Battle
-              </h2>
-              <p className="text-[#ccc] text-base leading-relaxed mb-6 max-w-lg">
-                Watch two AI perspectives go head-to-head on any topic. Pick your fighters, start the battle, and see who wins. Hot Take vs Devil's Advocate. Contrarian vs Expert Analysis. Winner takes all.
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-                {[
-                  { icon: '⚔️', title: 'Live debate', desc: '4 rounds of AI arguing back and forth in real time.' },
-                  { icon: '🏆', title: 'AI judge', desc: 'An AI judge declares the winner after the final round.' },
-                  { icon: '🎯', title: 'Any topic', desc: 'Politics, tech, finance, culture — anything goes.' },
-                ].map(f => (
-                  <div key={f.title} className="bg-black/40 rounded-xl p-4 border border-white/10">
-                    <div className="text-xl mb-2">{f.icon}</div>
-                    <p className="text-white font-semibold text-sm mb-1">{f.title}</p>
-                    <p className="text-[#aaa] text-xs leading-relaxed">{f.desc}</p>
+
+              {/* Right: battle chat preview */}
+              <div className="hidden md:flex items-center justify-center p-6">
+                <div style={{ width: '100%', maxWidth: 300, background: 'rgba(13,17,23,0.92)', borderRadius: 16, border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden', boxShadow: '0 0 40px rgba(232,93,58,0.15)' }}>
+                  {/* Header */}
+                  <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
+                    <span style={{ color: '#e85d3a', fontSize: 12, fontWeight: 700 }}>🔥 Hot Take</span>
+                    <span style={{ color: '#555', fontSize: 14, fontWeight: 900 }}>⚔️</span>
+                    <span style={{ color: '#7c3aed', fontSize: 12, fontWeight: 700 }}>😈 Devil's Advocate</span>
                   </div>
-                ))}
+                  <div style={{ padding: '14px 14px 8px' }}>
+                    <p style={{ color: '#4dd9c0', fontSize: 10, fontWeight: 600, textAlign: 'center', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.08em' }}>"Remote Work"</p>
+                    {/* Message A */}
+                    <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 10 }}>
+                      <div style={{ maxWidth: '80%', background: 'rgba(232,93,58,0.15)', border: '1px solid rgba(232,93,58,0.3)', borderRadius: '12px 12px 12px 4px', padding: '8px 12px' }}>
+                        <p style={{ color: '#e85d3a', fontSize: 8, fontWeight: 700, marginBottom: 4, textTransform: 'uppercase' }}>🔥 Hot Take</p>
+                        <p style={{ color: '#e2e8f0', fontSize: 10, lineHeight: 1.5 }}>RTO mandates aren't about productivity. They're about control — and companies know it.</p>
+                      </div>
+                    </div>
+                    {/* Message B */}
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 10 }}>
+                      <div style={{ maxWidth: '80%', background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.3)', borderRadius: '12px 12px 4px 12px', padding: '8px 12px' }}>
+                        <p style={{ color: '#a78bfa', fontSize: 8, fontWeight: 700, marginBottom: 4, textTransform: 'uppercase' }}>😈 Devil's Advocate</p>
+                        <p style={{ color: '#e2e8f0', fontSize: 10, lineHeight: 1.5 }}>Junior employees who started remote are struggling. The office wasn't just meetings — it was mentorship.</p>
+                      </div>
+                    </div>
+                    {/* Message A */}
+                    <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 10 }}>
+                      <div style={{ maxWidth: '80%', background: 'rgba(232,93,58,0.15)', border: '1px solid rgba(232,93,58,0.3)', borderRadius: '12px 12px 12px 4px', padding: '8px 12px' }}>
+                        <p style={{ color: '#e85d3a', fontSize: 8, fontWeight: 700, marginBottom: 4, textTransform: 'uppercase' }}>🔥 Hot Take</p>
+                        <p style={{ color: '#e2e8f0', fontSize: 10, lineHeight: 1.5 }}>You can't schedule osmosis. But you also can't justify a 2-hour commute for meetings that could be emails.</p>
+                      </div>
+                    </div>
+                    {/* Winner */}
+                    <div style={{ background: 'rgba(77,217,192,0.1)', border: '1px solid rgba(77,217,192,0.3)', borderRadius: 10, padding: '8px 12px', textAlign: 'center', marginBottom: 8 }}>
+                      <p style={{ color: '#4dd9c0', fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>🏆 Winner</p>
+                      <p style={{ color: '#ffffff', fontSize: 11, fontWeight: 700 }}>Hot Take</p>
+                      <p style={{ color: '#8b949e', fontSize: 9, fontStyle: 'italic' }}>"Sharper argument, better examples"</p>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <Link
-                href="/battle"
-                className="inline-block bg-[#e85d3a] text-white font-bold px-8 py-3 rounded-xl hover:bg-orange-700 transition-colors text-sm uppercase tracking-wider"
-              >
-                ⚔️ Start a Battle — Free
-              </Link>
             </div>
           </section>
 
@@ -689,6 +727,21 @@ export default function Home() {
               className="block w-full bg-[#e85d3a] text-white text-xs font-bold px-4 py-2.5 rounded-lg text-center hover:bg-orange-700 transition-colors uppercase tracking-wider">
               Upgrade — $5/mo
             </Link>
+          </div>
+
+          {/* Battle quick link */}
+          <div className="rounded-xl overflow-hidden border border-[#1a2a3a] relative">
+            <div style={{ position: 'absolute', inset: 0, backgroundImage: "url('/arena-bg.png')", backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.35 }} />
+            <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.6)' }} />
+            <div className="relative z-10 p-5">
+              <p className="text-xs font-bold uppercase tracking-widest text-[#e85d3a] mb-2">⚔️ New</p>
+              <h4 className="font-serif text-base font-bold text-white mb-2">Take Battle</h4>
+              <p className="text-xs text-[#aaa] leading-relaxed mb-4">Watch two AI angles debate any topic live. Who wins?</p>
+              <Link href="/battle"
+                className="block w-full bg-[#e85d3a] text-white text-xs font-bold px-4 py-2.5 rounded-lg text-center hover:bg-orange-700 transition-colors uppercase tracking-wider">
+                ⚔️ Start a Battle
+              </Link>
+            </div>
           </div>
         </div>
       </div>
