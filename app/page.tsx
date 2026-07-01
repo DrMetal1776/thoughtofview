@@ -377,6 +377,48 @@ export default function Home() {
             </Link>
           </section>
 
+          {/* Take Battle Promo */}
+          <section className="rounded-2xl overflow-hidden border border-[#1a2a3a] relative">
+            {/* Arena background */}
+            <div style={{
+              position: 'absolute', inset: 0,
+              backgroundImage: "url('/arena-bg.png')",
+              backgroundSize: 'cover', backgroundPosition: 'center',
+              opacity: 0.4,
+            }} />
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.75) 100%)' }} />
+            <div className="relative z-10 p-6 md:p-8">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-xs font-bold uppercase tracking-widest text-[#e85d3a]">⚔️ Live AI Debate</span>
+              </div>
+              <h2 className="font-serif text-3xl font-bold text-white leading-tight mb-3">
+                Take Battle
+              </h2>
+              <p className="text-[#ccc] text-base leading-relaxed mb-6 max-w-lg">
+                Watch two AI perspectives go head-to-head on any topic. Pick your fighters, start the battle, and see who wins. Hot Take vs Devil's Advocate. Contrarian vs Expert Analysis. Winner takes all.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                {[
+                  { icon: '⚔️', title: 'Live debate', desc: '4 rounds of AI arguing back and forth in real time.' },
+                  { icon: '🏆', title: 'AI judge', desc: 'An AI judge declares the winner after the final round.' },
+                  { icon: '🎯', title: 'Any topic', desc: 'Politics, tech, finance, culture — anything goes.' },
+                ].map(f => (
+                  <div key={f.title} className="bg-black/40 rounded-xl p-4 border border-white/10">
+                    <div className="text-xl mb-2">{f.icon}</div>
+                    <p className="text-white font-semibold text-sm mb-1">{f.title}</p>
+                    <p className="text-[#aaa] text-xs leading-relaxed">{f.desc}</p>
+                  </div>
+                ))}
+              </div>
+              <Link
+                href="/battle"
+                className="inline-block bg-[#e85d3a] text-white font-bold px-8 py-3 rounded-xl hover:bg-orange-700 transition-colors text-sm uppercase tracking-wider"
+              >
+                ⚔️ Start a Battle — Free
+              </Link>
+            </div>
+          </section>
+
           {/* Featured Takes */}
           {featuredTakes.length > 0 && (
             <section>
@@ -570,6 +612,7 @@ export default function Home() {
         <div className="flex justify-center gap-6 text-xs text-gray-500 mb-4 flex-wrap">
           <a href="/about" className="hover:text-black">About</a>
           <a href="/faq" className="hover:text-black">FAQ</a>
+          <a href="/battle" className="hover:text-black">Battle</a>
           <a href="/cards" className="hover:text-black">Cards</a>
           <a href="/privacy" className="hover:text-black">Privacy Policy</a>
           <a href="/terms" className="hover:text-black">Terms of Use</a>
