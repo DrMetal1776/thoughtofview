@@ -96,7 +96,7 @@ const CARD_EXAMPLES = [
   },
 ]
 
-
+type Take = {
   id: string
   topic: string
   angle: string
