@@ -431,150 +431,6 @@ export default function Home() {
             </div>
           </section>
 
-          {/* Take Cards Promo */}
-          <section className="bg-[#0d1117] rounded-2xl border border-[#1a2a3a] overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-2">
-              {/* Left: content */}
-              <div className="p-6 md:p-8">
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="text-xs font-bold uppercase tracking-widest text-[#4dd9c0]">New Feature</span>
-                </div>
-                <h2 className="font-serif text-3xl font-bold text-white leading-tight mb-3">
-                  Turn takes into shareable cards 🎨
-                </h2>
-                <p className="text-[#8b949e] text-base leading-relaxed mb-6">
-                  Generate beautiful 1080×1080 photo cards from any take — perfect for Instagram and X. Auto-matched photos, your branding, ready to post in seconds.
-                </p>
-                <div className="grid grid-cols-1 gap-3 mb-8">
-                  {[
-                    { icon: '📸', title: 'Auto photo', desc: 'Finds a relevant photo for your topic automatically.' },
-                    { icon: '🎨', title: 'Branded design', desc: 'Every card includes Thought of View branding.' },
-                    { icon: '⬇️', title: 'Download instantly', desc: 'One click to save as PNG and post anywhere.' },
-                  ].map(f => (
-                    <div key={f.title} className="flex items-start gap-3 bg-[#161b22] rounded-xl p-3 border border-[#21262d]">
-                      <span className="text-lg mt-0.5">{f.icon}</span>
-                      <div>
-                        <p className="text-white font-semibold text-sm">{f.title}</p>
-                        <p className="text-[#445566] text-xs leading-relaxed">{f.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <Link
-                  href="/cards"
-                  className="inline-block bg-[#4dd9c0] text-[#0d1117] font-bold px-8 py-3 rounded-xl hover:bg-teal-400 transition-colors text-sm uppercase tracking-wider"
-                >
-                  Create a Card — Free
-                </Link>
-              </div>
-
-              {/* Right: rotating card preview */}
-              <div className="hidden md:flex items-center justify-center p-6 bg-[#080d12]">
-                <div style={{ width: '100%', maxWidth: 300, aspectRatio: '1/1', borderRadius: 16, overflow: 'hidden', border: '1px solid #21262d', position: 'relative', boxShadow: '0 0 60px rgba(77,217,192,0.15)' }}>
-                  {CARD_EXAMPLES.map((card, i) => (
-                    <div key={i} style={{ position: 'absolute', inset: 0, opacity: cardIndex === i ? 1 : 0, transition: 'opacity 0.8s ease' }}>
-                      <div style={{ position: 'absolute', inset: 0, backgroundImage: `url(${card.photo})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
-                      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.85) 100%)' }} />
-                      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: '#4dd9c0' }} />
-                      <div style={{ position: 'absolute', inset: 0, padding: '14px 14px 40px' }}>
-                        <div style={{ display: 'flex', gap: 6, marginBottom: 8, flexWrap: 'wrap' as const }}>
-                          <span style={{ background: card.angleColor, color: '#fff', fontSize: 10, fontWeight: 700, padding: '4px 10px', borderRadius: 10, textTransform: 'uppercase' as const }}>{card.angleEmoji} {card.angle}</span>
-                          <span style={{ background: 'rgba(77,217,192,0.2)', color: '#4dd9c0', fontSize: 10, fontWeight: 700, padding: '4px 10px', borderRadius: 10, textTransform: 'uppercase' as const }}>{card.topic}</span>
-                        </div>
-                        <p style={{ color: '#ffffff', fontSize: 13, fontWeight: 700, lineHeight: 1.4, marginBottom: 8, fontFamily: 'Georgia, serif', textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>{card.headline}</p>
-                        <div style={{ height: 2, width: 28, background: '#4dd9c0', marginBottom: 8 }} />
-                        <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 10, lineHeight: 1.6, textShadow: '0 1px 3px rgba(0,0,0,0.8)' }}>{card.body.slice(0, 130)}...</p>
-                      </div>
-                      <div style={{ position: 'absolute', bottom: 10, left: 0, right: 0, background: 'rgba(0,0,0,0.8)', padding: '8px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span style={{ color: '#ffffff', fontSize: 11, fontWeight: 700, fontFamily: 'Georgia, serif' }}>Thought <span style={{ color: '#4dd9c0' }}>of View</span></span>
-                        <span style={{ color: '#445566', fontSize: 9 }}>thoughtofview.com</span>
-                      </div>
-                      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 2, background: '#4dd9c0' }} />
-                    </div>
-                  ))}
-                  {/* Dot indicators */}
-                  <div style={{ position: 'absolute', bottom: 22, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 4, zIndex: 10 }}>
-                    {CARD_EXAMPLES.map((_, i) => (
-                      <div key={i} onClick={() => setCardIndex(i)} style={{ width: cardIndex === i ? 16 : 6, height: 6, borderRadius: 3, background: cardIndex === i ? '#4dd9c0' : 'rgba(255,255,255,0.3)', cursor: 'pointer', transition: 'all 0.3s ease' }} />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Take Battle Promo */}
-          <section className="rounded-2xl overflow-hidden border border-[#1a2a3a] relative">
-            <div style={{ position: 'absolute', inset: 0, backgroundImage: "url('/arena-bg.png')", backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.4 }} />
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.75) 100%)' }} />
-            <div className="relative z-10 grid grid-cols-1 md:grid-cols-2">
-              {/* Left: content */}
-              <div className="p-6 md:p-8">
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="text-xs font-bold uppercase tracking-widest text-[#e85d3a]">⚔️ Live AI Debate</span>
-                </div>
-                <h2 className="font-serif text-3xl font-bold text-white leading-tight mb-3">Take Battle</h2>
-                <p className="text-[#ccc] text-base leading-relaxed mb-6">
-                  Watch two AI perspectives go head-to-head on any topic. Pick your fighters, start the battle, and see who wins. Winner takes all.
-                </p>
-                <div className="grid grid-cols-1 gap-3 mb-8">
-                  {[
-                    { icon: '⚔️', title: 'Live debate', desc: '4 rounds of AI arguing back and forth in real time.' },
-                    { icon: '🏆', title: 'AI judge', desc: 'An AI judge declares the winner after the final round.' },
-                    { icon: '🎯', title: 'Any topic', desc: 'Politics, tech, finance, culture — anything goes.' },
-                  ].map(f => (
-                    <div key={f.title} className="flex items-start gap-3 bg-black/40 rounded-xl p-3 border border-white/10">
-                      <span className="text-lg mt-0.5">{f.icon}</span>
-                      <div>
-                        <p className="text-white font-semibold text-sm">{f.title}</p>
-                        <p className="text-[#aaa] text-xs leading-relaxed">{f.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <Link href="/battle" className="inline-block bg-[#e85d3a] text-white font-bold px-8 py-3 rounded-xl hover:bg-orange-700 transition-colors text-sm uppercase tracking-wider">
-                  ⚔️ Start a Battle — Free
-                </Link>
-              </div>
-
-              {/* Right: rotating battle preview */}
-              <div className="hidden md:flex items-center justify-center p-6">
-                <div style={{ width: '100%', maxWidth: 300, background: 'rgba(13,17,23,0.92)', borderRadius: 16, border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden', boxShadow: '0 0 40px rgba(232,93,58,0.15)', position: 'relative', minHeight: 320 }}>
-                  {BATTLE_EXAMPLES.map((battle, i) => (
-                    <div key={i} style={{ position: 'absolute', inset: 0, opacity: battleIndex === i ? 1 : 0, transition: 'opacity 0.8s ease' }}>
-                      <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
-                        <span style={{ color: battle.angleA.color, fontSize: 11, fontWeight: 700 }}>{battle.angleA.emoji} {battle.angleA.name}</span>
-                        <span style={{ color: '#555', fontSize: 13, fontWeight: 900 }}>⚔️</span>
-                        <span style={{ color: battle.angleB.color, fontSize: 11, fontWeight: 700 }}>{battle.angleB.emoji} {battle.angleB.name}</span>
-                      </div>
-                      <div style={{ padding: '12px 14px 48px' }}>
-                        <p style={{ color: '#4dd9c0', fontSize: 10, fontWeight: 600, textAlign: 'center' as const, marginBottom: 10, textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>"{battle.topic}"</p>
-                        {battle.messages.map((msg, j) => (
-                          <div key={j} style={{ display: 'flex', justifyContent: msg.side === 'A' ? 'flex-start' : 'flex-end', marginBottom: 8 }}>
-                            <div style={{ maxWidth: '82%', background: `${msg.side === 'A' ? battle.angleA.color : battle.angleB.color}22`, border: `1px solid ${msg.side === 'A' ? battle.angleA.color : battle.angleB.color}44`, borderRadius: msg.side === 'A' ? '10px 10px 10px 3px' : '10px 10px 3px 10px', padding: '7px 10px' }}>
-                              <p style={{ color: msg.side === 'A' ? battle.angleA.color : battle.angleB.color, fontSize: 8, fontWeight: 700, marginBottom: 3, textTransform: 'uppercase' as const }}>{msg.side === 'A' ? `${battle.angleA.emoji} ${battle.angleA.name}` : `${battle.angleB.emoji} ${battle.angleB.name}`}</p>
-                              <p style={{ color: '#e2e8f0', fontSize: 10, lineHeight: 1.5 }}>{msg.text}</p>
-                            </div>
-                          </div>
-                        ))}
-                        <div style={{ background: 'rgba(77,217,192,0.1)', border: '1px solid rgba(77,217,192,0.3)', borderRadius: 10, padding: '7px 12px', textAlign: 'center' as const, marginTop: 4 }}>
-                          <p style={{ color: '#4dd9c0', fontSize: 8, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.08em', marginBottom: 3 }}>🏆 Winner</p>
-                          <p style={{ color: '#ffffff', fontSize: 11, fontWeight: 700 }}>{battle.winner}</p>
-                          <p style={{ color: '#8b949e', fontSize: 8, fontStyle: 'italic' }}>"{battle.reason}"</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                  <div style={{ position: 'absolute', bottom: 12, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 4, zIndex: 10 }}>
-                    {BATTLE_EXAMPLES.map((_, i) => (
-                      <div key={i} onClick={() => setBattleIndex(i)} style={{ width: battleIndex === i ? 16 : 6, height: 6, borderRadius: 3, background: battleIndex === i ? '#e85d3a' : 'rgba(255,255,255,0.3)', cursor: 'pointer', transition: 'all 0.3s ease' }} />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
           {/* Featured Takes */}
           {featuredTakes.length > 0 && (
             <section>
@@ -786,6 +642,138 @@ export default function Home() {
             </Link>
           </div>
         </div>
+      </div>
+
+      {/* Full-width Take Cards Promo */}
+      <div className="max-w-6xl mx-auto px-4 pb-8">
+        <section className="bg-[#0d1117] rounded-2xl border border-[#1a2a3a] overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-2">
+            <div className="p-6 md:p-8">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-xs font-bold uppercase tracking-widest text-[#4dd9c0]">New Feature</span>
+              </div>
+              <h2 className="font-serif text-3xl font-bold text-white leading-tight mb-3">Turn takes into shareable cards 🎨</h2>
+              <p className="text-[#8b949e] text-base leading-relaxed mb-6">Generate beautiful 1080×1080 photo cards from any take — perfect for Instagram and X. Auto-matched photos, your branding, ready to post in seconds.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                {[
+                  { icon: '📸', title: 'Auto photo', desc: 'Finds a relevant photo for your topic automatically.' },
+                  { icon: '🎨', title: 'Branded design', desc: 'Every card includes Thought of View branding.' },
+                  { icon: '⬇️', title: 'Download instantly', desc: 'One click to save as PNG and post anywhere.' },
+                ].map(f => (
+                  <div key={f.title} className="flex items-start gap-3 bg-[#161b22] rounded-xl p-3 border border-[#21262d]">
+                    <span className="text-lg mt-0.5">{f.icon}</span>
+                    <div>
+                      <p className="text-white font-semibold text-sm">{f.title}</p>
+                      <p className="text-[#445566] text-xs leading-relaxed">{f.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <Link href="/cards" className="inline-block bg-[#4dd9c0] text-[#0d1117] font-bold px-8 py-3 rounded-xl hover:bg-teal-400 transition-colors text-sm uppercase tracking-wider">
+                Create a Card — Free
+              </Link>
+            </div>
+            <div className="hidden md:flex items-center justify-center p-6 bg-[#080d12]">
+              <div style={{ width: '100%', maxWidth: 300, aspectRatio: '1/1', borderRadius: 16, overflow: 'hidden', border: '1px solid #21262d', position: 'relative', boxShadow: '0 0 60px rgba(77,217,192,0.15)' }}>
+                {CARD_EXAMPLES.map((card, i) => (
+                  <div key={i} style={{ position: 'absolute', inset: 0, opacity: cardIndex === i ? 1 : 0, transition: 'opacity 0.8s ease' }}>
+                    <div style={{ position: 'absolute', inset: 0, backgroundImage: `url(${card.photo})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.85) 100%)' }} />
+                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: '#4dd9c0' }} />
+                    <div style={{ position: 'absolute', inset: 0, padding: '14px 14px 40px' }}>
+                      <div style={{ display: 'flex', gap: 6, marginBottom: 8, flexWrap: 'wrap' as const }}>
+                        <span style={{ background: card.angleColor, color: '#fff', fontSize: 10, fontWeight: 700, padding: '4px 10px', borderRadius: 10, textTransform: 'uppercase' as const }}>{card.angleEmoji} {card.angle}</span>
+                        <span style={{ background: 'rgba(77,217,192,0.2)', color: '#4dd9c0', fontSize: 10, fontWeight: 700, padding: '4px 10px', borderRadius: 10, textTransform: 'uppercase' as const }}>{card.topic}</span>
+                      </div>
+                      <p style={{ color: '#ffffff', fontSize: 13, fontWeight: 700, lineHeight: 1.4, marginBottom: 8, fontFamily: 'Georgia, serif', textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>{card.headline}</p>
+                      <div style={{ height: 2, width: 28, background: '#4dd9c0', marginBottom: 8 }} />
+                      <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 10, lineHeight: 1.6, textShadow: '0 1px 3px rgba(0,0,0,0.8)' }}>{card.body.slice(0, 130)}...</p>
+                    </div>
+                    <div style={{ position: 'absolute', bottom: 10, left: 0, right: 0, background: 'rgba(0,0,0,0.8)', padding: '8px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ color: '#ffffff', fontSize: 11, fontWeight: 700, fontFamily: 'Georgia, serif' }}>Thought <span style={{ color: '#4dd9c0' }}>of View</span></span>
+                      <span style={{ color: '#445566', fontSize: 9 }}>thoughtofview.com</span>
+                    </div>
+                    <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 2, background: '#4dd9c0' }} />
+                  </div>
+                ))}
+                <div style={{ position: 'absolute', bottom: 22, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 4, zIndex: 10 }}>
+                  {CARD_EXAMPLES.map((_, i) => (
+                    <div key={i} onClick={() => setCardIndex(i)} style={{ width: cardIndex === i ? 16 : 6, height: 6, borderRadius: 3, background: cardIndex === i ? '#4dd9c0' : 'rgba(255,255,255,0.3)', cursor: 'pointer', transition: 'all 0.3s ease' }} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* Full-width Take Battle Promo */}
+      <div className="max-w-6xl mx-auto px-4 pb-16">
+        <section className="rounded-2xl overflow-hidden border border-[#1a2a3a] relative">
+          <div style={{ position: 'absolute', inset: 0, backgroundImage: "url('/arena-bg.png')", backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.4 }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.75) 100%)' }} />
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2">
+            <div className="p-6 md:p-8">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-xs font-bold uppercase tracking-widest text-[#e85d3a]">⚔️ Live AI Debate</span>
+              </div>
+              <h2 className="font-serif text-3xl font-bold text-white leading-tight mb-3">Take Battle</h2>
+              <p className="text-[#ccc] text-base leading-relaxed mb-6">Watch two AI perspectives go head-to-head on any topic. Pick your fighters, start the battle, and see who wins. Winner takes all.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                {[
+                  { icon: '⚔️', title: 'Live debate', desc: '4 rounds of AI arguing back and forth in real time.' },
+                  { icon: '🏆', title: 'AI judge', desc: 'An AI judge declares the winner after the final round.' },
+                  { icon: '🎯', title: 'Any topic', desc: 'Politics, tech, finance, culture — anything goes.' },
+                ].map(f => (
+                  <div key={f.title} className="flex items-start gap-3 bg-black/40 rounded-xl p-3 border border-white/10">
+                    <span className="text-lg mt-0.5">{f.icon}</span>
+                    <div>
+                      <p className="text-white font-semibold text-sm">{f.title}</p>
+                      <p className="text-[#aaa] text-xs leading-relaxed">{f.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <Link href="/battle" className="inline-block bg-[#e85d3a] text-white font-bold px-8 py-3 rounded-xl hover:bg-orange-700 transition-colors text-sm uppercase tracking-wider">
+                ⚔️ Start a Battle — Free
+              </Link>
+            </div>
+            <div className="hidden md:flex items-center justify-center p-6">
+              <div style={{ width: '100%', maxWidth: 300, background: 'rgba(13,17,23,0.92)', borderRadius: 16, border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden', boxShadow: '0 0 40px rgba(232,93,58,0.15)', position: 'relative', minHeight: 320 }}>
+                {BATTLE_EXAMPLES.map((battle, i) => (
+                  <div key={i} style={{ position: 'absolute', inset: 0, opacity: battleIndex === i ? 1 : 0, transition: 'opacity 0.8s ease' }}>
+                    <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+                      <span style={{ color: battle.angleA.color, fontSize: 11, fontWeight: 700 }}>{battle.angleA.emoji} {battle.angleA.name}</span>
+                      <span style={{ color: '#555', fontSize: 13, fontWeight: 900 }}>⚔️</span>
+                      <span style={{ color: battle.angleB.color, fontSize: 11, fontWeight: 700 }}>{battle.angleB.emoji} {battle.angleB.name}</span>
+                    </div>
+                    <div style={{ padding: '12px 14px 48px' }}>
+                      <p style={{ color: '#4dd9c0', fontSize: 10, fontWeight: 600, textAlign: 'center' as const, marginBottom: 10, textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>"{battle.topic}"</p>
+                      {battle.messages.map((msg, j) => (
+                        <div key={j} style={{ display: 'flex', justifyContent: msg.side === 'A' ? 'flex-start' : 'flex-end', marginBottom: 8 }}>
+                          <div style={{ maxWidth: '82%', background: `${msg.side === 'A' ? battle.angleA.color : battle.angleB.color}22`, border: `1px solid ${msg.side === 'A' ? battle.angleA.color : battle.angleB.color}44`, borderRadius: msg.side === 'A' ? '10px 10px 10px 3px' : '10px 10px 3px 10px', padding: '7px 10px' }}>
+                            <p style={{ color: msg.side === 'A' ? battle.angleA.color : battle.angleB.color, fontSize: 8, fontWeight: 700, marginBottom: 3, textTransform: 'uppercase' as const }}>{msg.side === 'A' ? `${battle.angleA.emoji} ${battle.angleA.name}` : `${battle.angleB.emoji} ${battle.angleB.name}`}</p>
+                            <p style={{ color: '#e2e8f0', fontSize: 10, lineHeight: 1.5 }}>{msg.text}</p>
+                          </div>
+                        </div>
+                      ))}
+                      <div style={{ background: 'rgba(77,217,192,0.1)', border: '1px solid rgba(77,217,192,0.3)', borderRadius: 10, padding: '7px 12px', textAlign: 'center' as const, marginTop: 4 }}>
+                        <p style={{ color: '#4dd9c0', fontSize: 8, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.08em', marginBottom: 3 }}>🏆 Winner</p>
+                        <p style={{ color: '#ffffff', fontSize: 11, fontWeight: 700 }}>{battle.winner}</p>
+                        <p style={{ color: '#8b949e', fontSize: 8, fontStyle: 'italic' }}>"{battle.reason}"</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                <div style={{ position: 'absolute', bottom: 12, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 4, zIndex: 10 }}>
+                  {BATTLE_EXAMPLES.map((_, i) => (
+                    <div key={i} onClick={() => setBattleIndex(i)} style={{ width: battleIndex === i ? 16 : 6, height: 6, borderRadius: 3, background: battleIndex === i ? '#e85d3a' : 'rgba(255,255,255,0.3)', cursor: 'pointer', transition: 'all 0.3s ease' }} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
 
       {/* Footer */}
