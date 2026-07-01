@@ -46,6 +46,9 @@ export default function Navbar() {
           <Link href="/feed" className="text-sm hover:text-brand-orange transition-colors">
             Feed
           </Link>
+          <Link href="/battle" className="text-sm font-semibold hover:text-brand-orange transition-colors">
+            ⚔️ Battle
+          </Link>
           <Link href="/cards" className="text-sm hover:text-brand-orange transition-colors">
             🎨 Cards
           </Link>
