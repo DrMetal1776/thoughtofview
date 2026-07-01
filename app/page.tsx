@@ -135,7 +135,7 @@ const BATTLE_EXAMPLES = [
   },
 ]
 
-
+type Take = {
   id: string
   topic: string
   angle: string
