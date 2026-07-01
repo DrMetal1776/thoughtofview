@@ -346,35 +346,82 @@ export default function Home() {
           </section>
 
           {/* Take Cards Promo */}
-          <section className="bg-[#0d1117] rounded-2xl p-6 md:p-8 border border-[#1a2a3a]">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#4dd9c0]">New Feature</span>
-            </div>
-            <h2 className="font-serif text-3xl font-bold text-white leading-tight mb-3">
-              Turn takes into shareable cards 🎨
-            </h2>
-            <p className="text-[#8b949e] text-base leading-relaxed mb-6 max-w-lg">
-              Generate beautiful 1080×1080 photo cards from any take — perfect for Instagram and X. Auto-matched photos, your branding, ready to post in seconds.
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-              {[
-                { icon: '📸', title: 'Auto photo', desc: 'Finds a relevant photo for your topic automatically.' },
-                { icon: '🎨', title: 'Branded design', desc: 'Every card includes Thought of View branding.' },
-                { icon: '⬇️', title: 'Download instantly', desc: 'One click to save as PNG and post anywhere.' },
-              ].map(f => (
-                <div key={f.title} className="bg-[#161b22] rounded-xl p-4 border border-[#21262d]">
-                  <div className="text-xl mb-2">{f.icon}</div>
-                  <p className="text-white font-semibold text-sm mb-1">{f.title}</p>
-                  <p className="text-[#445566] text-xs leading-relaxed">{f.desc}</p>
+          <section className="bg-[#0d1117] rounded-2xl border border-[#1a2a3a] overflow-hidden">
+            <div className="grid grid-cols-1 md:grid-cols-2">
+              {/* Left: content */}
+              <div className="p-6 md:p-8">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-xs font-bold uppercase tracking-widest text-[#4dd9c0]">New Feature</span>
                 </div>
-              ))}
+                <h2 className="font-serif text-3xl font-bold text-white leading-tight mb-3">
+                  Turn takes into shareable cards 🎨
+                </h2>
+                <p className="text-[#8b949e] text-base leading-relaxed mb-6">
+                  Generate beautiful 1080×1080 photo cards from any take — perfect for Instagram and X. Auto-matched photos, your branding, ready to post in seconds.
+                </p>
+                <div className="grid grid-cols-1 gap-3 mb-8">
+                  {[
+                    { icon: '📸', title: 'Auto photo', desc: 'Finds a relevant photo for your topic automatically.' },
+                    { icon: '🎨', title: 'Branded design', desc: 'Every card includes Thought of View branding.' },
+                    { icon: '⬇️', title: 'Download instantly', desc: 'One click to save as PNG and post anywhere.' },
+                  ].map(f => (
+                    <div key={f.title} className="flex items-start gap-3 bg-[#161b22] rounded-xl p-3 border border-[#21262d]">
+                      <span className="text-lg mt-0.5">{f.icon}</span>
+                      <div>
+                        <p className="text-white font-semibold text-sm">{f.title}</p>
+                        <p className="text-[#445566] text-xs leading-relaxed">{f.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <Link
+                  href="/cards"
+                  className="inline-block bg-[#4dd9c0] text-[#0d1117] font-bold px-8 py-3 rounded-xl hover:bg-teal-400 transition-colors text-sm uppercase tracking-wider"
+                >
+                  Create a Card — Free
+                </Link>
+              </div>
+
+              {/* Right: card preview mockup */}
+              <div className="hidden md:flex items-center justify-center p-6 bg-[#080d12]">
+                <div style={{
+                  width: '100%', maxWidth: 220, aspectRatio: '1/1',
+                  background: '#0d1117', borderRadius: 12, overflow: 'hidden',
+                  border: '1px solid #21262d', position: 'relative',
+                  boxShadow: '0 0 40px rgba(77,217,192,0.1)',
+                }}>
+                  {/* Top teal bar */}
+                  <div style={{ height: 4, background: '#4dd9c0', width: '100%' }} />
+                  {/* Card content */}
+                  <div style={{ padding: '14px 14px 10px' }}>
+                    {/* Angle badge */}
+                    <div style={{ display: 'flex', gap: 6, marginBottom: 10 }}>
+                      <span style={{ background: '#e85d3a', color: '#fff', fontSize: 9, fontWeight: 700, padding: '3px 8px', borderRadius: 10, textTransform: 'uppercase', letterSpacing: '0.05em' }}>🔥 Hot Take</span>
+                      <span style={{ background: 'rgba(77,217,192,0.15)', color: '#4dd9c0', fontSize: 9, fontWeight: 700, padding: '3px 8px', borderRadius: 10, textTransform: 'uppercase' }}>AI</span>
+                    </div>
+                    {/* Headline */}
+                    <p style={{ color: '#ffffff', fontSize: 11, fontWeight: 700, lineHeight: 1.4, marginBottom: 8, fontFamily: 'Georgia, serif' }}>
+                      Remote Work Didn't Kill Productivity — It Killed the Illusion
+                    </p>
+                    {/* Divider */}
+                    <div style={{ height: 2, width: 28, background: '#4dd9c0', marginBottom: 8 }} />
+                    {/* Body */}
+                    <p style={{ color: '#8b949e', fontSize: 9, lineHeight: 1.6 }}>
+                      Companies demanding RTO aren't protecting culture. They're protecting middle management jobs that only exist to supervise people.
+                    </p>
+                  </div>
+                  {/* Bottom branding */}
+                  <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(0,0,0,0.8)', padding: '8px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ color: '#ffffff', fontSize: 9, fontWeight: 700, fontFamily: 'Georgia, serif' }}>
+                      Thought <span style={{ color: '#4dd9c0' }}>of View</span>
+                    </span>
+                    <span style={{ color: '#445566', fontSize: 8 }}>thoughtofview.com</span>
+                  </div>
+                  {/* Bottom teal bar */}
+                  <div style={{ height: 3, background: '#4dd9c0', width: '100%' }} />
+                </div>
+              </div>
             </div>
-            <Link
-              href="/cards"
-              className="inline-block bg-[#4dd9c0] text-[#0d1117] font-bold px-8 py-3 rounded-xl hover:bg-teal-400 transition-colors text-sm uppercase tracking-wider"
-            >
-              Create a Card — Free
-            </Link>
           </section>
 
           {/* Take Battle Promo */}
